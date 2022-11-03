@@ -36,10 +36,11 @@ datpro <- datpro %>%
   filter(!grepl('retired', CharacteristicName))
 ```
 
+All data from the Water Quality Portal (NWIS, WQX): <https://www.waterqualitydata.us/>
+
 ## Count of observations in WQP
 
 ```{r}
-#| label: fig-count
 #| fig-width: 9
 #| fig-height: 4
 #| out-width: '100%'
@@ -59,7 +60,6 @@ ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)))) +
 ## Date of collection
 
 ```{r}
-#| label: fig-date
 #| fig-width: 9
 #| fig-height: 4
 #| out-width: '100%'
