@@ -110,7 +110,7 @@ tomap <- datpro %>%
   filter(CharacteristicName == 'Nitrogen') %>% 
   group_by(CharacteristicName, lon, lat) %>%
   summarize(
-    ave = mean(as.numeric(ResultMeasureValue), na.rm = T), 
+    ave = exp(mean(log(as.numeric(ResultMeasureValue)), na.rm = TRUE)), 
     lat = mean(lat, na.rm = T), 
     lon = mean(lon, na.rm = T), 
     .groups = 'drop'
