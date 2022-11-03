@@ -29,6 +29,7 @@ library(sf)
 library(forcats)
 library(hrbrthemes)
 library(lubridate)
+library(downloadthis)
 
 load(file = here('data/datpro.RData'))
 
@@ -37,6 +38,17 @@ datpro <- datpro %>%
 ```
 
 All data from the Water Quality Portal (NWIS, WQX): <https://www.waterqualitydata.us/>
+
+```{r}
+download_this(
+  datpro,
+  output_extension = ".xlsx",
+  button_label = "Download data",
+  button_type = "warning",
+  has_icon = TRUE,
+  icon = "fa fa-save"
+)
+```
 
 ## Count of observations in WQP
 
