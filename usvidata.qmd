@@ -8,10 +8,14 @@ format:
   html:
     theme: cosmo
     code-tools: 
-      source: https://github.com/tbep-tech/BlueGAP-sandbox/usvidata.qmd
+      source: https://github.com/tbep-tech/BlueGAP-sandbox/blob/main/usvidata.qmd
 execute:
   echo: false
   warning: false
+filters:
+  - lightbox
+  
+lightbox: auto
 ---
   
 ```{r}
@@ -35,35 +39,41 @@ datpro <- datpro %>%
 ## Count of observations in WQP
 
 ```{r}
+#| label: fig-count
 #| fig-width: 9
 #| fig-height: 4
 #| out-width: '100%'
+#| lightbox: 
+#|   description: Counts for nitrogen parameters
 toplo <- datpro
 
-ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)))) + 
-  geom_bar(stat = 'count', alpha = 0.9) + 
+ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)))) +
+  geom_bar(stat = 'count', alpha = 0.9) +
   labs(
-    x = 'Count', 
+    x = 'Count',
     y = NULL
-  ) + 
+  ) +
   theme_ipsum()
 ```
 
 ## Date of collection
 
 ```{r}
+#| label: fig-date
 #| fig-width: 9
 #| fig-height: 4
 #| out-width: '100%'
-toplo <- datpro %>% 
+#| lightbox: 
+#|   description: Collection dates for nitrogen parameters
+toplo <- datpro %>%
   mutate(ActivityStartDate = ymd(ActivityStartDate))
 
-ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)), x = ActivityStartDate)) + 
-  geom_point() + 
+ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)), x = ActivityStartDate)) +
+  geom_point() +
   labs(
-    x = 'Date', 
+    x = 'Date',
     y = NULL
-  ) + 
+  ) +
   theme_ipsum()
 ```
 
@@ -71,18 +81,18 @@ ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)), x = ActivityStart
 
 ```{r}
 #| out-width: '100%'
-tomap <- datpro %>% 
+tomap <- datpro %>%
   rename(
-    lon = ActivityLocation.LongitudeMeasure, 
+    lon = ActivityLocation.LongitudeMeasure,
     lat = ActivityLocation.LatitudeMeasure
-  ) %>% 
+  ) %>%
   group_by(CharacteristicName, lon, lat) %>%
   summarize(
-    cnt = n(), 
-    lat = mean(lat, na.rm = T), 
-    lon = mean(lon, na.rm = T), 
+    cnt = n(),
+    lat = mean(lat, na.rm = T),
+    lon = mean(lon, na.rm = T),
     .groups = 'drop'
-  ) %>% 
+  ) %>%
   st_as_sf(coords = c('lon', 'lat'), crs = 4326)
 
 mapview(tomap, zcol = 'cnt', layer.name = 'Count', homebutton = F)
@@ -92,7 +102,7 @@ mapview(tomap, zcol = 'cnt', layer.name = 'Count', homebutton = F)
 
 ```{r}
 #| out-width: '100%'
-tomap <- tomap %>% 
+tomap <- tomap %>%
   filter(CharacteristicName == 'Nitrogen')
 
 mapview(tomap, zcol = 'cnt', layer.name = 'Count', homebutton = F)
@@ -102,19 +112,19 @@ mapview(tomap, zcol = 'cnt', layer.name = 'Count', homebutton = F)
 
 ```{r}
 #| out-width: '100%'
-tomap <- datpro %>% 
+tomap <- datpro %>%
   rename(
-    lon = ActivityLocation.LongitudeMeasure, 
+    lon = ActivityLocation.LongitudeMeasure,
     lat = ActivityLocation.LatitudeMeasure
-  ) %>% 
-  filter(CharacteristicName == 'Nitrogen') %>% 
+  ) %>%
+  filter(CharacteristicName == 'Nitrogen') %>%
   group_by(CharacteristicName, lon, lat) %>%
   summarize(
-    ave = exp(mean(log(as.numeric(ResultMeasureValue)), na.rm = TRUE)), 
-    lat = mean(lat, na.rm = T), 
-    lon = mean(lon, na.rm = T), 
+    ave = exp(mean(log(as.numeric(ResultMeasureValue)), na.rm = TRUE)),
+    lat = mean(lat, na.rm = T),
+    lon = mean(lon, na.rm = T),
     .groups = 'drop'
-  ) %>% 
+  ) %>%
   st_as_sf(coords = c('lon', 'lat'), crs = 4326)
 
 mapview(tomap, zcol = 'ave', layer.name = 'Avg. (mg/L)', homebutton = F)
