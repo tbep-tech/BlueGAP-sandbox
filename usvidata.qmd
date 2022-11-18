@@ -12,10 +12,10 @@ format:
 execute:
   echo: false
   warning: false
-filters:
-  - lightbox
-  
-lightbox: auto
+# filters:
+#   - lightbox
+#   
+# lightbox: auto
 ---
   
 ```{r}
@@ -32,10 +32,15 @@ library(lubridate)
 library(downloadthis)
 
 load(file = here('data/datpro.RData'))
+load(file = here('data/datpro2.RData'))
 
 datpro <- datpro %>% 
   filter(!grepl('retired', CharacteristicName))
 ```
+
+::: {.panel-tabset}
+
+## Water Quality Portal
 
 All data from the Water Quality Portal (NWIS, WQX): <https://www.waterqualitydata.us/>
 
@@ -50,7 +55,7 @@ download_this(
 )
 ```
 
-## Count of observations in WQP
+### Count of observations in WQP
 
 ```{r}
 #| fig-width: 9
@@ -69,7 +74,7 @@ ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)))) +
   theme_ipsum()
 ```
 
-## Date of collection
+### Date of collection
 
 ```{r}
 #| fig-width: 9
@@ -89,7 +94,7 @@ ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)), x = ActivityStart
   theme_ipsum()
 ```
 
-## Count by location
+### Count by location
 
 ```{r}
 #| out-width: '100%'
@@ -110,7 +115,7 @@ tomap <- datpro %>%
 mapview(tomap, zcol = 'cnt', layer.name = 'Count', homebutton = F)
 ```
 
-## Count by location - Nitrogen only
+### Count by location - Nitrogen only
 
 ```{r}
 #| out-width: '100%'
@@ -120,7 +125,7 @@ tomap <- tomap %>%
 mapview(tomap, zcol = 'cnt', layer.name = 'Count', homebutton = F)
 ```
 
-## Avg. concentration by location - Nitrogen only
+### Avg. concentration by location - Nitrogen only
 
 ```{r}
 #| out-width: '100%'
@@ -141,3 +146,110 @@ tomap <- datpro %>%
 
 mapview(tomap, zcol = 'ave', layer.name = 'Avg. (mg/L)', homebutton = F)
 ```
+
+## STORET via email
+
+```{r}
+download_this(
+  datpro2,
+  output_extension = ".xlsx",
+  button_label = "Download data",
+  button_type = "warning",
+  has_icon = TRUE,
+  icon = "fa fa-save"
+)
+```
+
+### Count of observations in WQP
+
+```{r}
+#| fig-width: 9
+#| fig-height: 4
+#| out-width: '100%'
+#| lightbox: 
+#|   description: Counts for nitrogen parameters
+toplo <- datpro2
+
+ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)))) +
+  geom_bar(stat = 'count', alpha = 0.9) +
+  labs(
+    x = 'Count',
+    y = NULL
+  ) +
+  theme_ipsum()
+```
+
+### Date of collection
+
+```{r}
+#| fig-width: 9
+#| fig-height: 4
+#| out-width: '100%'
+#| lightbox: 
+#|   description: Collection dates for nitrogen parameters
+toplo <- datpro2 %>%
+  mutate(ActivityStartDate = ymd(ActivityStartDate))
+
+ggplot(toplo, aes(y = fct_rev(fct_infreq(CharacteristicName)), x = ActivityStartDate)) +
+  geom_point() +
+  labs(
+    x = 'Date',
+    y = NULL
+  ) +
+  theme_ipsum()
+```
+
+### Count by location
+
+```{r}
+#| out-width: '100%'
+tomap <- datpro2 %>%
+  rename(
+    lon = ActivityLocation.LongitudeMeasure,
+    lat = ActivityLocation.LatitudeMeasure
+  ) %>%
+  group_by(CharacteristicName, lon, lat) %>%
+  summarize(
+    cnt = n(),
+    lat = mean(lat, na.rm = T),
+    lon = mean(lon, na.rm = T),
+    .groups = 'drop'
+  ) %>%
+  st_as_sf(coords = c('lon', 'lat'), crs = 4326)
+
+mapview(tomap, zcol = 'cnt', layer.name = 'Count', homebutton = F)
+```
+
+### Count by location - Nitrogen only
+
+```{r}
+#| out-width: '100%'
+tomap <- tomap %>%
+  filter(CharacteristicName == 'Nitrogen')
+
+mapview(tomap, zcol = 'cnt', layer.name = 'Count', homebutton = F)
+```
+
+### Avg. concentration by location - Nitrogen only
+
+```{r}
+#| out-width: '100%'
+tomap <- datpro2 %>%
+  rename(
+    lon = ActivityLocation.LongitudeMeasure,
+    lat = ActivityLocation.LatitudeMeasure
+  ) %>%
+  filter(CharacteristicName == 'Nitrogen') %>%
+  group_by(CharacteristicName, lon, lat) %>%
+  summarize(
+    ave = exp(mean(log(as.numeric(ResultMeasureValue)), na.rm = TRUE)),
+    lat = mean(lat, na.rm = T),
+    lon = mean(lon, na.rm = T),
+    .groups = 'drop'
+  ) %>%
+  st_as_sf(coords = c('lon', 'lat'), crs = 4326)
+
+mapview(tomap, zcol = 'ave', layer.name = 'Avg. (mg/L)', homebutton = F)
+```
+
+:::

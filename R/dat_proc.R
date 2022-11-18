@@ -67,7 +67,6 @@ locraw2 <- locraw2 %>%
 datpro2 <- datraw2 %>% 
   filter(ActivityTypeCode %in% c('Field Msr/Obs', 'Sample', 'Sample-Other', 'Sample-Routine')) %>% 
   filter(grepl('nitra|nitro|nitrite|ammo', CharacteristicName, ignore.case = TRUE)) %>% 
-  # filter(!is.na(ActivityLocation.LatitudeMeasure) & !is.na(ActivityLocation.LongitudeMeasure)) %>% 
   select(
     OrganizationIdentifier, 
     OrganizationFormalName, 
@@ -85,6 +84,7 @@ datpro2 <- datraw2 %>%
     MonitoringLocationIdentifier
   ) %>% 
   left_join(locraw2, by = 'MonitoringLocationIdentifier') %>% 
-  select(-MonitoringLocationIdentifier)
+  select(-MonitoringLocationIdentifier) %>% 
+  filter(ActivityLocation.LatitudeMeasure < 18)
 
 save(datpro2, file = here('data/datpro2.RData'))
