@@ -12,10 +12,10 @@ format:
 execute:
   echo: false
   warning: false
-# filters:
-#   - lightbox
-#   
-# lightbox: auto
+filters:
+  - lightbox
+
+lightbox: auto
 ---
   
 ```{r}
