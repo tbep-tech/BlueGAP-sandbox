@@ -8,7 +8,7 @@ library(readxl)
 # selected US, Virgin Islands, St. Croix, NWIS, STEWARDS, WQX, selected sample results
 datraw <- read.csv('~/Desktop/resultphyschem.csv')
 
-save(datraw, file = here('data/datraw.RData'))
+save(datraw, file = here('data/datraw.RData'), compress = 'xz')
 
 # processed -----------------------------------------------------------------------------------
 
@@ -38,7 +38,6 @@ datpro <- datraw %>%
   )
 
 save(datpro, file = here('data/datpro.RData'))
-
 
 # dat raw from FR email 11/17 -----------------------------------------------------------------
 
@@ -84,7 +83,6 @@ datpro2 <- datraw2 %>%
     MonitoringLocationIdentifier
   ) %>% 
   left_join(locraw2, by = 'MonitoringLocationIdentifier') %>% 
-  select(-MonitoringLocationIdentifier) %>% 
-  filter(ActivityLocation.LatitudeMeasure < 18)
+  select(-MonitoringLocationIdentifier)
 
 save(datpro2, file = here('data/datpro2.RData'))
