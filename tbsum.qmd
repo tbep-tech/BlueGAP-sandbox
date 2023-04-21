@@ -1,0 +1,86 @@
+---
+title: "Tampa Bay data summary"
+author: 
+  - name: Marcus Beck, <mbeck@tbep.org>
+institute: "Tampa Bay Estuary Program"
+date: "`r Sys.Date()`"
+format:
+  html:
+    theme: cosmo
+    code-tools: 
+      source: https://github.com/tbep-tech/BlueGAP-sandbox/blob/main/tbsum.qmd
+execute:
+  echo: false
+  warning: false
+filters:
+  - lightbox
+
+lightbox: auto
+---
+  
+```{r}
+#| include: false
+library(tidyverse)
+library(here)
+library(sf)
+library(mapview)
+library(tbeptools)
+library(plotly)
+
+sf_use_s2(FALSE)
+
+load(file = here('data/tbco.RData'))
+load(file = here('data/tbshedcos.RData'))
+
+tbdat <- list(
+    STORET = read_csv(here('data/raw/TB_STORET_sites_coordinates.csv'), col_types = 'cnn'),
+    NWIS = read_csv(here('data/raw/TB_NWIS_sites_coordinates.csv'), col_types = 'cnn')
+  ) %>% 
+  enframe(name = 'source') %>%
+  unnest('value') %>% 
+  st_as_sf(coords = c('lon', 'lat'), crs = 4326)
+
+tbdatshed <- tbdat[tbshed, ]
+t
+```
+
+### Data by source, relative to TBEP boundaries 
+```{r}
+mapview(tbshed, legend = F) + mapview(tbdat, zcol = 'source', layer.name = 'Source')
+```
+
+### Clipped to TBEP boundaries
+
+```{r}
+mapview(tbshed, legend = F) + mapview(tbdatshed, zcol = 'source', layer.name = 'Source')
+```
+
+### Clipped to counties
+
+```{r}
+mapview(tbshedcos, legend = F, label = 'NAME', col.regions = 'blue', alpha.regions = 0.5) + mapview(tbdatshed, zcol = 'source', layer.name = 'Source')
+```
+
+```{r}
+toplo <- st_intersection(tbdatshed, tbshedcos) %>% 
+  st_set_geometry(NULL) %>% 
+  summarise(
+    cnt = n(), 
+    .by = c('source', 'NAME')
+  )
+p <- ggplot(toplo, aes(y = reorder(NAME, cnt), x = cnt, fill = source)) + 
+  geom_col() + 
+  scale_x_continuous(expand = c(0, 0)) + 
+  theme_minimal() + 
+  theme(
+    legend.position = 'top', 
+    panel.grid.minor = element_blank()
+  ) + 
+  labs(
+    x = 'Station count', 
+    y = NULL, 
+    fill= NULL
+  )
+ggplotly(p, tooltip = 'cnt')
+```
+

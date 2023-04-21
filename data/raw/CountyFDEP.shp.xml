@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<metadata>
+	<idinfo>
+		<descript>
+			<abstract>Detailed shoreline with county boundaries</abstract>
+			<langdata Sync="TRUE">en</langdata></descript>
+		<keywords>
+			<theme>
+				<themekt>none</themekt>
+				<themekey>Counties</themekey><themekey>DLG</themekey><themekey>NOAA</themekey><themekey>Shoreline</themekey><themekey>USGS</themekey><themekey>Administrative, Municipal &amp; Political Boundaries</themekey></theme>
+			<place>
+				<placekey>Florida</placekey>
+			</place>
+		</keywords>
+		<accconst>none</accconst>
+		<native Sync="TRUE">Microsoft Windows XP Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 9.3.1.3000</native><citation><citeinfo><pubdate>19960101</pubdate><title>Florida Counties with Shoreline (areas)</title><ftname Sync="TRUE">BASE.COUNTYSHORE_AREAS</ftname><geoform Sync="TRUE">vector digital data</geoform><onlink Sync="TRUE">\\TBEPSERVER\tbepuser\GIS_General\FDEP\COUNTYSHORE_AREAS</onlink></citeinfo></citation><timeperd><current>publication date</current><timeinfo><rngdates><begdate>1996</begdate><enddate>1999</enddate></rngdates></timeinfo></timeperd><status><progress>Complete</progress><update>None planned</update></status><spdom><bounding><westbc Sync="TRUE">-87.639226</westbc><eastbc Sync="TRUE">-79.872419</eastbc><northbc Sync="TRUE">31.042851</northbc><southbc Sync="TRUE">24.466386</southbc></bounding><lboundng><leftbc Sync="TRUE">52668.029000</leftbc><rightbc Sync="TRUE">793973.913000</rightbc><bottombc Sync="TRUE">57882.656500</bottombc><topbc Sync="TRUE">781606.019500</topbc></lboundng></spdom><natvform Sync="TRUE">SDE Feature Class</natvform></idinfo>
+	<dataqual>
+		<lineage>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<title>1:24,000 DLG Boundary layer &amp; FLSHORE/FMRI Florida 1:40,000 Shoreline</title>
+					</citeinfo>
+				</srccite>
+				<srcscale>24,000 for county boundaries; 1:40,000 for shorelines</srcscale>
+				<typesrc>digital, mylar, paper</typesrc>
+			</srcinfo>
+			<procstep>
+				<procsv>ARC/INFO 7.2.1; ArcView 3.2</procsv>
+				<procdesc>The county lines from a copy of the 1:24,000 DLG boundary layer were
+extracted and inserted into the 1:40,000 shoreline sheet.  The coverage was
+CLEANed to establish polygon topology and county name attribution was added.
+
+     The coverage was converted to a shapefile for insertion into SDE.  Polygons
+were checked and edited for correct county and water attribution.  DEP County
+Codes and FIPS Codes were obtained from the Oracle table MT$COUNTY and added
+through a join of the County Name.
+
+     In December, 1999, the shapefile of this dataset was inserted into Spatial
+Database Engine (SDE 3.0.2).</procdesc>
+				<procdate>10/15/99</procdate>
+				<proccont>
+					<cntinfo>
+						<cntorgp>
+						</cntorgp>
+					</cntinfo>
+				</proccont>
+			</procstep>
+			<procstep><procdesc>The DEP_COUNTY and FIPS_COUNTY missing attributes for Desoto county were added in the table via SQL Navigator.</procdesc><procsv>ArcSDE 8.3, SQL Navigator 4.1</procsv><procdate>2/28/2006</procdate></procstep><procstep><procdesc Sync="TRUE">Dataset copied.</procdesc><srcused Sync="TRUE">C:\Old_D_Drive\GIS\FDEP\GIS\COUNTYSHORE_AREAS</srcused><procdate Sync="TRUE">20160219</procdate><proctime Sync="TRUE">15170900</proctime></procstep></lineage>
+	</dataqual>
+	<eainfo>
+		<overview>
+			<eaover>NAME         Textual county names in upper case
+
+DEP_COUNTY   Numeric code used in DEP's Regulatory Databases
+
+FIPS_COUNTY  County FIPS codes = ((County code * 2) - 1)
+
+
+DEP_COUNTY   NAME         FIPS_COUNTY
+----------   ----         -----------
+         1   ALACHUA                1
+         2   BAKER                  3
+         3   BAY                    5
+         4   BRADFORD               7
+         5   BREVARD                9
+         6   BROWARD               11
+         7   CALHOUN               13
+         8   CHARLOTTE             15
+         9   CITRUS                17
+        10   CLAY                  19
+        11   COLLIER               21
+        12   COLUMBIA              23
+        13   DADE                  25
+        14   DESOTO                27
+        15   DIXIE                 29
+        16   DUVAL                 31
+        17   ESCAMBIA              33
+        18   FLAGLER               35
+        19   FRANKLIN              37
+        20   GADSDEN               39
+        21   GILCHRIST             41
+        22   GLADES                43
+        23   GULF                  45
+        24   HAMILTON              47
+        25   HARDEE                49
+        26   HENDRY                51
+        27   HERNANDO              53
+        28   HIGHLANDS             55
+        29   HILLSBOROUGH          57
+        30   HOLMES                59
+        31   INDIAN RIVER          61
+        32   JACKSON               63
+        33   JEFFERSON             65
+        34   LAFAYETTE             67
+        35   LAKE                  69
+        36   LEE                   71
+        37   LEON                  73
+        38   LEVY                  75
+        39   LIBERTY               77
+        40   MADISON               79
+        41   MANATEE               81
+        42   MARION                83
+        43   MARTIN                85
+        44   MONROE                87
+        45   NASSAU                89
+        46   OKALOOSA              91
+        47   OKEECHOBEE            93
+        48   ORANGE                95
+        49   OSCEOLA               97
+        50   PALM BEACH            99
+        51   PASCO                101
+        52   PINELLAS             103
+        53   POLK                 105
+        54   PUTNAM               107
+        55   ST. JOHNS            109
+        56   ST. LUCIE            111
+        57   SANTA ROSA           113
+        58   SARASOTA             115
+        59   SEMINOLE             117
+        60   SUMTER               119
+        61   SUWANNEE             121
+        62   TAYLOR               123
+        63   UNION                125
+        64   VOLUSIA              127
+        65   WAKULLA              129
+        66   WALTON               131
+        67   WASHINGTON           133
+
+
+WATER   Enables the differentiated shading of land and water for maps
+        0 = land
+        1 = water</eaover>
+		</overview>
+		<detailed Name="CountyFDEP"><enttyp><enttypl Sync="TRUE">CountyFDEP</enttypl><enttypt Sync="TRUE">Feature Class</enttypt><enttypc Sync="TRUE">0</enttypc></enttyp><attr><attrlabl Sync="TRUE">FID</attrlabl><attalias Sync="TRUE">FID</attalias><attrtype Sync="TRUE">OID</attrtype><attwidth Sync="TRUE">4</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Internal feature number.</attrdef><attrdefs Sync="TRUE">Esri</attrdefs><attrdomv><udom Sync="TRUE">Sequential unique whole numbers that are automatically generated.</udom></attrdomv></attr><attr><attrlabl Sync="TRUE">NAME</attrlabl><attalias Sync="TRUE">NAME</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">20</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl Sync="TRUE">SHAPE</attrlabl><attalias Sync="TRUE">Shape</attalias><attrtype Sync="TRUE">Geometry</attrtype><attwidth Sync="TRUE">0</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Feature geometry.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Coordinates defining the features.</udom></attrdomv></attr></detailed></eainfo>
+	<distinfo>
+		<resdesc>Live Data and Maps</resdesc>
+	</distinfo>
+	<metainfo>
+		<metd Sync="TRUE">20090702</metd>
+		<metc>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>Florida Department of Environmental Protection (FDEP) BIS/GIS Section</cntorg></cntorgp>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<city>Tallahassee</city><state>FL</state><postal>32399-2400</postal><address>2600 Blair Stone Rd </address><address>MS 6520</address><country>USA</country></cntaddr>
+				<cntemail>GIS.Librarian@dep.state.fl.us</cntemail></cntinfo>
+		</metc>
+		<langmeta Sync="TRUE">en</langmeta><metstdn Sync="TRUE">FGDC Content Standards for Digital Geospatial Metadata</metstdn><metstdv Sync="TRUE">FGDC-STD-001-1998</metstdv><mettc Sync="TRUE">local time</mettc></metainfo>
+	<Esri><CreaDate>20160219</CreaDate><CreaTime>15170900</CreaTime><SyncOnce>FALSE</SyncOnce><SyncDate>20210209</SyncDate><SyncTime>14492200</SyncTime><ModDate>20210209</ModDate><ModTime>14492200</ModTime><PublishStatus>Published</PublishStatus><MetaID>{D6DDAB80-3C7F-4C1A-8D98-CD4BB64460A9}</MetaID><DataProperties><itemProps><itemName Sync="TRUE">CountyFDEP</itemName><imsContentType Sync="TRUE">002</imsContentType><itemSize Sync="TRUE">0.000</itemSize><itemLocation><linkage Sync="TRUE">file://\\tbepserver\tbepdrive\05_GIS\BOUNDARIES\CountiesTBEP\CountyFDEP.shp</linkage><protocol Sync="TRUE">Local Area Network</protocol></itemLocation></itemProps><coordRef><type Sync="TRUE">Projected</type><geogcsn Sync="TRUE">GCS_North_American_1983_HARN</geogcsn><csUnits Sync="TRUE">Linear Unit: Meter (1.000000)</csUnits><projcsn Sync="TRUE">FDEP Albers HARN</projcsn><peXml Sync="TRUE">&lt;ProjectedCoordinateSystem xsi:type='typens:ProjectedCoordinateSystem' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:typens='http://www.esri.com/schemas/ArcGIS/10.7'&gt;&lt;WKT&gt;PROJCS[&amp;quot;FDEP Albers HARN&amp;quot;,GEOGCS[&amp;quot;GCS_North_American_1983_HARN&amp;quot;,DATUM[&amp;quot;D_North_American_1983_HARN&amp;quot;,SPHEROID[&amp;quot;GRS_1980&amp;quot;,6378137.0,298.257222101]],PRIMEM[&amp;quot;Greenwich&amp;quot;,0.0],UNIT[&amp;quot;Degree&amp;quot;,0.0174532925199433]],PROJECTION[&amp;quot;Albers&amp;quot;],PARAMETER[&amp;quot;False_Easting&amp;quot;,400000.0],PARAMETER[&amp;quot;False_Northing&amp;quot;,0.0],PARAMETER[&amp;quot;Central_Meridian&amp;quot;,-84.0],PARAMETER[&amp;quot;Standard_Parallel_1&amp;quot;,24.0],PARAMETER[&amp;quot;Standard_Parallel_2&amp;quot;,31.5],PARAMETER[&amp;quot;Latitude_Of_Origin&amp;quot;,24.0],UNIT[&amp;quot;Meter&amp;quot;,1.0]]&lt;/WKT&gt;&lt;XOrigin&gt;-19550100&lt;/XOrigin&gt;&lt;YOrigin&gt;-7526400&lt;/YOrigin&gt;&lt;XYScale&gt;225743210.67916927&lt;/XYScale&gt;&lt;ZOrigin&gt;-100000&lt;/ZOrigin&gt;&lt;ZScale&gt;10000&lt;/ZScale&gt;&lt;MOrigin&gt;-100000&lt;/MOrigin&gt;&lt;MScale&gt;10000&lt;/MScale&gt;&lt;XYTolerance&gt;0.001&lt;/XYTolerance&gt;&lt;ZTolerance&gt;0.001&lt;/ZTolerance&gt;&lt;MTolerance&gt;0.001&lt;/MTolerance&gt;&lt;HighPrecision&gt;true&lt;/HighPrecision&gt;&lt;/ProjectedCoordinateSystem&gt;</peXml></coordRef><lineage><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\Dissolve" Date="20210209" Time="144936">Dissolve COUNTYSHORE_AREAS T:\05_GIS\BOUNDARIES\CountiesTBEP\CountyFDEP.shp NAME # MULTI_PART DISSOLVE_LINES</Process></lineage></DataProperties></Esri><spdoinfo><direct Sync="TRUE">Vector</direct><ptvctinf><esriterm Name="CountyFDEP"><efeatyp Sync="TRUE">Simple</efeatyp><efeageom code="4" Sync="TRUE"></efeageom><esritopo Sync="TRUE">FALSE</esritopo><efeacnt Sync="TRUE">0</efeacnt><spindex Sync="TRUE">FALSE</spindex><linrefer Sync="TRUE">TRUE</linrefer></esriterm></ptvctinf></spdoinfo><spref><horizsys><cordsysn><geogcsn Sync="TRUE">GCS_North_American_1983_HARN</geogcsn><projcsn Sync="TRUE">FDEP_Albers_HARN</projcsn></cordsysn><planar><planci><plance Sync="TRUE">coordinate pair</plance><plandu Sync="TRUE">meters</plandu><coordrep><absres Sync="TRUE">0.000500</absres><ordres Sync="TRUE">0.000500</ordres></coordrep></planci></planar><geodetic><horizdn Sync="TRUE">D_North_American_1983_HARN</horizdn><ellips Sync="TRUE">Geodetic Reference System 80</ellips><semiaxis Sync="TRUE">6378137.000000</semiaxis><denflat Sync="TRUE">298.257222</denflat></geodetic></horizsys><vertdef><altsys><altenc Sync="TRUE">Explicit elevation coordinate included with horizontal coordinates</altenc><altres Sync="TRUE">1.000000</altres></altsys></vertdef></spref><Binary/><mdDateSt Sync="TRUE">20210209</mdDateSt><dataIdInfo><tpCat><TopicCatCd value="003"/></tpCat><envirDesc Sync="TRUE"> Version 6.2 (Build 9200) ; Esri ArcGIS 10.7.0.10450</envirDesc><dataLang><languageCode Sync="TRUE" value="eng"></languageCode><countryCode value="USA" Sync="TRUE"></countryCode></dataLang><idCitation><resTitle Sync="TRUE">CountyFDEP</resTitle><presForm><PresFormCd Sync="TRUE" value="005"></PresFormCd></presForm></idCitation><spatRpType><SpatRepTypCd Sync="TRUE" value="001"></SpatRepTypCd></spatRpType><dataExt><geoEle><GeoBndBox esriExtentType="native"><westBL Sync="TRUE">52668.029</westBL><eastBL Sync="TRUE">793973.913</eastBL><northBL Sync="TRUE">781606.0195</northBL><southBL Sync="TRUE">57882.6565</southBL><exTypeCode Sync="TRUE">1</exTypeCode></GeoBndBox></geoEle></dataExt><geoBox esriExtentType="decdegrees"><westBL Sync="TRUE">-87.639226</westBL><eastBL Sync="TRUE">-79.872419</eastBL><northBL Sync="TRUE">31.042851</northBL><southBL Sync="TRUE">24.466386</southBL><exTypeCode Sync="TRUE">1</exTypeCode></geoBox></dataIdInfo><mdLang><languageCode Sync="TRUE" value="eng"></languageCode><countryCode value="USA" Sync="TRUE"></countryCode></mdLang><mdStanName Sync="TRUE">ISO 19115 Geographic Information - Metadata</mdStanName><mdStanVer Sync="TRUE">DIS_ESRI1.0</mdStanVer><mdChar><CharSetCd Sync="TRUE" value="006"></CharSetCd></mdChar><mdHrLv><ScopeCd Sync="TRUE" value="005"></ScopeCd></mdHrLv><mdHrLvName Sync="TRUE">dataset</mdHrLvName><distInfo><distributor><distorTran><onLineSrc><orDesc Sync="TRUE">002</orDesc><linkage Sync="TRUE">file://\\TBEPSERVER\tbepuser\GIS_General\FDEP\COUNTYSHORE_AREAS</linkage><protocol Sync="TRUE">Local Area Network</protocol></onLineSrc></distorTran><distorFormat><formatName Sync="TRUE">SDE Feature Class</formatName></distorFormat></distributor><distFormat><formatName Sync="TRUE">Shapefile</formatName></distFormat><distTranOps><transSize Sync="TRUE">0.000</transSize></distTranOps></distInfo><refSysInfo><RefSystem><refSysID><identCode Sync="TRUE" code="0">FDEP_Albers_HARN</identCode></refSysID></RefSystem></refSysInfo><spatRepInfo><VectSpatRep><geometObjs Name="CountyFDEP"><geoObjTyp><GeoObjTypCd value="002" Sync="TRUE"></GeoObjTypCd></geoObjTyp><geoObjCnt Sync="TRUE">0</geoObjCnt></geometObjs><topLvl><TopoLevCd value="001" Sync="TRUE"></TopoLevCd></topLvl></VectSpatRep></spatRepInfo><mdFileID Sync="TRUE">{5D80A989-DFAF-48D4-98F9-5192BD962B59}</mdFileID></metadata>

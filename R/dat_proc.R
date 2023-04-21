@@ -1,6 +1,9 @@
 library(tidyverse)
 library(here)
 library(readxl)
+library(sf)
+
+sf_use_s2(FALSE)
 
 # raw -----------------------------------------------------------------------------------------
 
@@ -86,3 +89,38 @@ datpro2 <- datraw2 %>%
   select(-MonitoringLocationIdentifier)
 
 save(datpro2, file = here('data/datpro2.RData'))
+
+# tb counties ---------------------------------------------------------------------------------
+
+tbco <- st_read(here('data/raw/CountyFDEP.shp')) %>% 
+  st_simplify(dTolerance = 10) %>% 
+  st_transform(crs = 4326) %>% 
+  st_make_valid() %>% 
+  filter(NAME %in% c('HILLSBOROUGH', 'PINELLAS', 'SARASOTA', 'MANATEE', 'PASCO', 'POLK'))
+save(tbco, file = here('data/tbco.RData'), compress = 'xz')
+
+# tb counties clipped by shed plus bay --------------------------------------------------------
+
+load(file = here('data/tbco.RData'))
+
+tbcos <- st_intersection(tbshed, tbco) %>% 
+  select(-Acres)
+
+tbshederase <- st_combine(tbcos) %>% 
+  st_make_valid() %>% 
+  st_difference(tbshed, .) %>% 
+  st_cast('POLYGON') %>% 
+  mutate(
+    area = st_area(.)
+  ) %>% 
+  filter(area == max(area)) %>% 
+  mutate(
+    NAME = 'TAMPA BAY'
+  ) %>% 
+  select(-area, -Acres)
+
+tbshedcos <- bind_rows(tbcos, tbshederase)
+row.names(tbshedcos) <- 1:nrow(tbshedcos)
+
+save(tbshedcos, file = here('data/tbshedcos.RData'), compress = 'xz')
+
