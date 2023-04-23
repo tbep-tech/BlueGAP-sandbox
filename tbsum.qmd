@@ -17,7 +17,7 @@ filters:
 
 lightbox: auto
 ---
-  
+
 ```{r}
 #| include: false
 library(tidyverse)
@@ -31,6 +31,8 @@ sf_use_s2(FALSE)
 
 load(file = here('data/tbco.RData'))
 load(file = here('data/tbshedcos.RData'))
+load(file = here('data/tbshedzip.RData'))
+load(file = here('data/tbshedtra.RData'))
 
 tbdat <- list(
     STORET = read_csv(here('data/raw/TB_STORET_sites_coordinates.csv'), col_types = 'cnn'),
@@ -41,10 +43,12 @@ tbdat <- list(
   st_as_sf(coords = c('lon', 'lat'), crs = 4326)
 
 tbdatshed <- tbdat[tbshed, ]
-t
 ```
 
-### Data by source, relative to TBEP boundaries 
+::: {.panel-tabset}
+
+### Data by source, relative to TBEP boundaries
+
 ```{r}
 mapview(tbshed, legend = F) + mapview(tbdat, zcol = 'source', layer.name = 'Source')
 ```
@@ -55,10 +59,10 @@ mapview(tbshed, legend = F) + mapview(tbdat, zcol = 'source', layer.name = 'Sour
 mapview(tbshed, legend = F) + mapview(tbdatshed, zcol = 'source', layer.name = 'Source')
 ```
 
-### Clipped to counties
+### Summary by county
 
 ```{r}
-mapview(tbshedcos, legend = F, label = 'NAME', col.regions = 'blue', alpha.regions = 0.5) + mapview(tbdatshed, zcol = 'source', layer.name = 'Source')
+mapview(tbshedcos, legend = F, label = 'NAME', col.regions = 'blue', alpha.regions = 0.4) + mapview(tbdatshed, zcol = 'source', layer.name = 'Source')
 ```
 
 ```{r}
@@ -71,6 +75,7 @@ toplo <- st_intersection(tbdatshed, tbshedcos) %>%
 p <- ggplot(toplo, aes(y = reorder(NAME, cnt), x = cnt, fill = source)) + 
   geom_col() + 
   scale_x_continuous(expand = c(0, 0)) + 
+  scale_fill_viridis_d() +
   theme_minimal() + 
   theme(
     legend.position = 'top', 
@@ -84,3 +89,76 @@ p <- ggplot(toplo, aes(y = reorder(NAME, cnt), x = cnt, fill = source)) +
 ggplotly(p, tooltip = 'cnt')
 ```
 
+### Summary by zip code
+
+```{r}
+mapview(tbshedzip, legend = F, label = 'Name', col.regions = 'blue', alpha.regions = 0.4) + mapview(tbdatshed, zcol = 'source', layer.name = 'Source')
+```
+
+```{r}
+toplo <- st_intersection(tbdatshed, tbshedzip) %>% 
+  st_set_geometry(NULL) %>% 
+  summarise(
+    cnt = n(), 
+    .by = c('source', 'Name')
+  )
+misdat <- round(100 * nrow(toplo) / nrow(tbshedzip), 0)
+```
+
+`r misdat`% zip codes have data.
+
+```{r}
+p <- ggplot(toplo, aes(y = reorder(Name, cnt), x = cnt, fill = source)) + 
+  geom_col() + 
+  scale_x_continuous(expand = c(0, 0)) + 
+  scale_fill_viridis_d() +
+  theme_minimal() + 
+  theme(
+    legend.position = 'top', 
+    panel.grid.minor = element_blank()
+  ) + 
+  labs(
+    x = 'Station count', 
+    y = NULL, 
+    fill= NULL
+  )
+ggplotly(p, tooltip = 'cnt', height = 900)
+```
+
+### Summary by census tract
+
+```{r}
+mapview(tbshedtra, legend = F, label = 'Name', col.regions = 'blue', alpha.regions = 0.4) + mapview(tbdatshed, zcol = 'source', layer.name = 'Source')
+```
+
+```{r}
+toplo <- st_intersection(tbdatshed, tbshedtra) %>% 
+  st_set_geometry(NULL) %>% 
+  summarise(
+    cnt = n(), 
+    .by = c('source', 'Name')
+  )
+misdat <- round(100 * nrow(toplo) / nrow(tbshedtra), 0)
+```
+
+`r misdat`% tracts have data.
+
+```{r}
+p <- ggplot(toplo, aes(y = reorder(Name, cnt), x = cnt, fill = source)) + 
+  geom_col() + 
+  scale_x_continuous(expand = c(0, 0)) + 
+  scale_fill_viridis_d() +
+  theme_minimal() + 
+  theme(
+    legend.position = 'top', 
+    panel.grid.minor = element_blank()
+  ) + 
+  labs(
+    x = 'Station count', 
+    y = NULL, 
+    fill= NULL
+  )
+ggplotly(p, tooltip = 'cnt', height = 1200)
+```
+
+:::

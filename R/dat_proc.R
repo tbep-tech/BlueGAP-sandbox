@@ -124,3 +124,69 @@ row.names(tbshedcos) <- 1:nrow(tbshedcos)
 
 save(tbshedcos, file = here('data/tbshedcos.RData'), compress = 'xz')
 
+# tb shed zip codes ---------------------------------------------------------------------------
+
+# url with zip gdb to download
+urlin <- 'https://www2.census.gov/geo/tiger/GENZ2018/kml/cb_2018_us_zcta510_500k.zip'
+
+# download file
+tmp1 <- tempfile(fileext = ".zip")
+download.file(url = urlin, destfile = tmp1)
+
+# unzip file
+tmp2 <- tempdir()
+utils::unzip(tmp1, exdir = tmp2)
+
+# file path
+pth <- list.files(tmp2, pattern = '\\.kml$', full.names = T)
+pth <- gsub('\\\\', '/', pth)
+
+# read the layer
+zip <- st_read(pth) %>% 
+  st_make_valid()
+
+# remove temp files
+unlink(tmp1, recursive = TRUE)
+unlink(pth, recursive = TRUE)
+
+tbzip <- st_intersection(tbshed, zip) %>% 
+  select(-Description, -Acres)
+
+tbshederase <- st_combine(tbzip) %>% 
+  st_make_valid() %>% 
+  st_difference(tbshed, .) %>% 
+  st_cast('POLYGON') %>% 
+  mutate(
+    area = st_area(.)
+  ) %>% 
+  filter(area == max(area)) %>% 
+  mutate(
+    Name = 'TAMPA BAY'
+  ) %>% 
+  select(-area, -Acres)
+
+tbshedzip <- bind_rows(tbzip, tbshederase) %>% 
+  mutate(Name = gsub('<at>|<openparen>|<closeparen>', '', Name))
+row.names(tbshedzip) <- 1:nrow(tbshedzip)
+
+save(tbshedzip, file = here('data/tbshedzip.RData'))
+
+# census tracts -------------------------------------------------------------------------------
+
+load(file = url('https://github.com/tbep-tech/equity-plan-mapping/raw/main/data/tb_tract.RData'))
+
+tbtra <- tb_tract %>% 
+  select(Name = ID)
+
+tbseguni <- st_union(tbseg) %>% 
+  st_sf() %>% 
+  mutate(Name = 'Tampa Bay')
+
+tbtra <- st_difference(tbtra, tbseguni) %>% 
+  select(-Name.1) %>% 
+  rename(geometry = Shape)
+
+tbshedtra <- bind_rows(tbtra, tbseguni)
+row.names(tbshedtra) <- 1:nrow(tbshedtra)
+
+save(tbshedtra, file = here('data/tbshedtra.RData'))
