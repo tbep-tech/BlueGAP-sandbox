@@ -33,6 +33,7 @@ load(file = here('data/tbco.RData'))
 load(file = here('data/tbshedcos.RData'))
 load(file = here('data/tbshedzip.RData'))
 load(file = here('data/tbshedtra.RData'))
+load(file = here('data/tb03100206.RData'))
 
 tbdat <- list(
     STORET = read_csv(here('data/raw/TB_STORET_sites_coordinates.csv'), col_types = 'cnn'),
@@ -159,6 +160,21 @@ p <- ggplot(toplo, aes(y = reorder(Name, cnt), x = cnt, fill = source)) +
     fill= NULL
   )
 ggplotly(p, tooltip = 'cnt', height = 1200)
+```
+
+### My data pull
+
+Location of data pulling HUC 03100206 (should include all dates): https://www.waterqualitydata.us/#huc=03100206&sampleMedia=Water&characteristicType=Nutrient&mimeType=csv&dataProfile=resultPhysChem&providers=STORET
+
+```{r}
+tomap <- datraw %>% 
+  select(OrganizationIdentifier, lat = ActivityLocation.LatitudeMeasure, lon = ActivityLocation.LongitudeMeasure) %>% 
+  unique() %>% 
+  filter(!is.na(lat)) %>% 
+  st_as_sf(coords = c('lon', 'lat'), crs = 4326) %>% 
+  st_geometry()
+
+mapview(tomap)
 ```
 
 :::
