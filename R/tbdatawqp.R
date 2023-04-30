@@ -4,8 +4,10 @@ library(lubridate)
 # https://www.waterqualitydata.us/#huc=03100206&sampleMedia=Water&characteristicType=Nutrient&mimeType=csv&dataProfile=resultPhysChem&providers=STORET
 # https://water.usgs.gov/wsc/acc/031002.html
 
-datraw <- read.csv('~/Desktop/resultphyschem.csv')
-save(datraw, file = 'data/tb03100206.RData', compress = 'xz')
+# datraw <- read.csv('~/Desktop/resultphyschem.csv')
+# save(datraw, file = 'data/tb03100206.RData', compress = 'xz')
+
+load(file = 'data/tb03100206.RData')
 
 dat <- datraw %>% 
   select(org = OrganizationFormalName, date = ActivityStartDate, MonitoringLocationIdentifier,
@@ -47,14 +49,23 @@ flt <- toplo %>%
   .[1:5]
 
 toplo2 <- dat %>% 
-  select(org, CharacteristicName) %>% 
-  filter(org %in% flt) %>% 
+  select(org, CharacteristicName, MonitoringLocationIdentifier, date) %>%
   summarise(
-    cnt = n(), 
+    nobs = n(), 
+    nstation = length(unique(MonitoringLocationIdentifier)),
+    mindate = min(date), 
+    maxdate = max(date),
     .by = c('org', 'CharacteristicName')
-  )
+  ) %>% 
+  arrange(org, CharacteristicName)
 
-ggplot(toplo2, aes(y = reorder(CharacteristicName, cnt), x = cnt)) + 
+# summary for ibrahim
+write.csv(toplo2, here::here('data/raw/tb03100206.csv'), row.names = F)
+
+toplo2 <- toplo2 %>% 
+  filter(org %in% flt)
+
+ggplot(toplo2, aes(y = reorder(CharacteristicName, nobs), x = nobs)) + 
   geom_col() + 
   facet_wrap(~org, scales = 'free_y', ncol = 2) + 
   theme(

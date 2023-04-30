@@ -1,0 +1,90 @@
+"org","CharacteristicName","nobs","nstation","mindate","maxdate"
+"Biological Research Associates (Florida)","Inorganic nitrogen (nitrate and nitrite) as N",47,8,2005-09-26,2007-10-23
+"Biological Research Associates (Florida)","Kjeldahl nitrogen",47,8,2005-09-26,2007-10-23
+"Biological Research Associates (Florida)","Nitrate as N",10,1,2005-09-26,2006-06-07
+"Biological Research Associates (Florida)","Nitrite as N",10,1,2005-09-26,2006-06-07
+"City of St Petersburg","Ammonia-nitrogen",909,67,2013-06-26,2017-10-31
+"City of St Petersburg","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",1416,260,2013-07-01,2021-03-23
+"City of St Petersburg","Kjeldahl nitrogen",917,67,2013-06-26,2017-10-31
+"City of St Petersburg","Nitrate",6,6,2021-10-25,2021-10-26
+"City of St Petersburg","Nitrate + Nitrite",108,53,2021-05-13,2021-12-28
+"City of St Petersburg","Nitrite",7,7,2021-10-21,2021-10-26
+"City of St Petersburg","Nitrogen, mixed forms (NH3), (NH4), organic, (NO2) and (NO3)",903,67,2013-06-26,2017-10-31
+"City of St Petersburg","Total Kjeldahl nitrogen (Organic N & NH3)",622,248,2017-03-20,2021-12-28
+"City of Tampa Bay Study Group (Florida)","Ammonia-nitrogen",936,7,1990-01-10,2005-12-13
+"City of Tampa Bay Study Group (Florida)","Inorganic nitrogen (nitrate and nitrite) as N",946,7,1990-01-10,2005-12-13
+"City of Tampa Bay Study Group (Florida)","Kjeldahl nitrogen",948,7,1990-01-10,2005-12-13
+"City of Tampa Bay Study Group (Florida)","Nitrogen ion",948,7,1990-01-10,2005-12-13
+"EPA National Aquatic Resources Survey (NARS)","Inorganic nitrogen (ammonia, nitrate and nitrite)***retired***use Inorganic nitrogen (NO2, NO3, & NH3)",50,45,2000-07-12,2006-07-03
+"EPA National Aquatic Resources Survey (NARS)","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",12,6,2010-06-02,2010-06-10
+"EPA National Aquatic Resources Survey (NARS)","Nitrate + Nitrite",8,7,2015-06-01,2015-07-21
+"EPA National Aquatic Resources Survey (NARS)","Nitrogen",102,52,2000-07-12,2010-06-10
+"EPA National Aquatic Resources Survey (NARS)","Organic Nitrogen",27,27,2000-07-12,2001-07-05
+"EPA National Aquatic Resources Survey (NARS)","Total Nitrogen, mixed forms",8,7,2015-06-01,2015-07-21
+"EPA National Aquatic Resources Survey (NARS)","Total Particulate Nitrogen",31,31,2000-07-12,2004-07-02
+"EPCHC","Ammonia-nitrogen",14506,121,1999-01-05,2017-06-28
+"EPCHC","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",23333,186,1999-01-05,2021-10-27
+"EPCHC","Kjeldahl nitrogen",18769,121,1999-01-05,2017-06-28
+"EPCHC","Nitrate + Nitrite",1175,123,2019-08-05,2022-11-29
+"EPCHC","Nitrogen, mixed forms (NH3), (NH4), organic, (NO2) and (NO3)",14794,121,2001-01-17,2017-06-28
+"EPCHC","Organic Nitrogen",18760,121,1999-01-05,2017-06-28
+"EPCHC","Total Kjeldahl nitrogen (Organic N & NH3)",6039,126,2017-07-05,2022-11-29
+"Environmental Monitoring and Assessment Program","Inorganic nitrogen (nitrate and nitrite) as N",13,13,2000-07-18,2004-07-01
+"Environmental Monitoring and Assessment Program","Nutrient-nitrogen",22,14,2000-07-18,2004-07-02
+"Environmental Monitoring and Assessment Program","Organic Nitrogen",4,4,2003-07-03,2004-07-02
+"FDEP Watershed Assessment Section (WAS)","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",33,16,2012-12-26,2019-07-08
+"FDEP Watershed Assessment Section (WAS)","Kjeldahl nitrogen",26,9,2012-12-26,2013-05-01
+"FDEP Watershed Assessment Section (WAS)","Total Kjeldahl nitrogen (Organic N & NH3)",7,7,2019-01-10,2019-07-08
+"FDEP, Water Quality Standards and Special Projects (Florida)","Ammonia-nitrogen",210,28,2005-03-07,2013-06-25
+"FDEP, Water Quality Standards and Special Projects (Florida)","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",210,28,2005-03-07,2013-06-25
+"FDEP, Water Quality Standards and Special Projects (Florida)","Kjeldahl nitrogen",210,28,2005-03-07,2013-06-25
+"FDEP, Water Quality Standards and Special Projects (Florida)","Nitrate",18,6,2013-04-02,2013-06-25
+"FL Dept. of Environmental Protection","Ammonia-nitrogen",168,168,2004-07-12,2017-03-27
+"FL Dept. of Environmental Protection","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",363,247,2000-06-13,2021-03-25
+"FL Dept. of Environmental Protection","Kjeldahl nitrogen",201,196,2000-06-13,2017-03-27
+"FL Dept. of Environmental Protection","Total Kjeldahl nitrogen (Organic N & NH3)",162,51,2013-01-07,2021-03-25
+"FLDEP","Ammonia-nitrogen",1975,255,2002-04-23,2017-10-03
+"FLDEP","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",2287,283,2002-04-23,2021-08-25
+"FLDEP","Kjeldahl nitrogen",1978,256,2002-04-23,2017-10-03
+"FLDEP","Total Kjeldahl nitrogen (Organic N & NH3)",310,52,2016-04-19,2021-08-25
+"Florida Fish & Wildlife C C / Marine Research Institute","Inorganic nitrogen (nitrate and nitrite) as N",53,45,2000-07-12,2006-07-03
+"Florida Fish & Wildlife C C / Marine Research Institute","Nutrient-nitrogen",106,45,2000-07-12,2006-07-03
+"Florida Fish and Wildlife Conservation Commission (Florida)","Ammonia-nitrogen as N",4,1,1988-12-02,1989-10-23
+"Florida Fish and Wildlife Conservation Commission (Florida)","Nitrate as N",4,1,1988-12-02,1989-10-23
+"Florida Fish and Wildlife Conservation Commission (Florida)","Organic Nitrogen",4,1,1988-12-02,1989-10-23
+"Florida LAKEWATCH","Nitrogen, mixed forms (NH3), (NH4), organic, (NO2) and (NO3)",3708,243,2018-02-25,2022-10-02
+"Florida LAKEWATCH","Nutrient-nitrogen",14343,385,1989-09-24,2006-03-29
+"Manatee County","Ammonia-nitrogen",3457,34,1995-11-20,2017-12-14
+"Manatee County","Ammonia-nitrogen as N",2392,33,1995-11-20,2009-02-24
+"Manatee County","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",2997,30,1995-11-20,2021-06-23
+"Manatee County","Inorganic nitrogen (nitrate and nitrite) as N",1482,28,1995-11-20,2009-02-24
+"Manatee County","Kjeldahl nitrogen",5759,67,1995-11-20,2017-12-14
+"Manatee County","Nitrate",2072,29,1995-11-20,2013-08-20
+"Manatee County","Nitrate + Nitrite",177,29,2019-11-05,2022-09-07
+"Manatee County","Nitrate as N",1534,28,1995-11-20,2009-02-24
+"Manatee County","Total Kjeldahl nitrogen (Organic N & NH3)",621,29,2018-01-09,2022-09-07
+"Pinellas County","Ammonia-nitrogen",4173,2346,2009-06-22,2017-12-21
+"Pinellas County","Ammonia-nitrogen as N",2424,1591,2005-02-17,2009-08-17
+"Pinellas County","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",5565,3207,2009-06-22,2021-12-16
+"Pinellas County","Inorganic nitrogen (nitrate and nitrite) as N",5758,2382,1999-01-06,2009-08-17
+"Pinellas County","Kjeldahl nitrogen",9937,4736,1999-01-06,2017-12-21
+"Pinellas County","Nitrate + Nitrite",724,445,2018-01-29,2022-07-07
+"Pinellas County","Total Kjeldahl nitrogen (Organic N & NH3)",2067,1260,2018-01-29,2022-07-07
+"Southwest Florida Water Management District","Ammonia-nitrogen",2339,112,1998-02-05,2015-11-16
+"Southwest Florida Water Management District","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",2463,115,2000-06-07,2020-11-18
+"Southwest Florida Water Management District","Kjeldahl nitrogen",585,26,1999-12-09,2011-09-19
+"Southwest Florida Water Management District","Nitrate",186,9,1998-02-05,2000-05-17
+"Southwest Florida Water Management District","Nitrate + Nitrite",31,8,2021-01-05,2021-11-03
+"Southwest Florida Water Management District","Nitrite",2026,115,1998-02-05,2021-11-03
+"Southwest Florida Water Management District","Nitrogen, mixed forms (NH3), (NH4), organic, (NO2) and (NO3)",1847,115,1998-02-05,2021-07-14
+"St.  Johns Water Management District (Florida)","Ammonia-nitrogen as N",7,7,2008-05-13,2008-05-13
+"St.  Johns Water Management District (Florida)","Inorganic nitrogen (nitrate and nitrite) as N",7,7,2008-05-13,2008-05-13
+"St.  Johns Water Management District (Florida)","Kjeldahl nitrogen",14,7,2008-05-13,2008-05-13
+"Tampa Bay Water","Ammonia-nitrogen",969,306,2008-10-28,2016-09-28
+"Tampa Bay Water","Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite",1207,387,2008-10-28,2020-09-08
+"Tampa Bay Water","Kjeldahl nitrogen",1130,375,2008-10-28,2016-09-28
+"Tampa Bay Water","Nitrate + Nitrite",24,1,2020-10-14,2021-09-27
+"Tampa Bay Water","Total Kjeldahl nitrogen (Organic N & NH3)",82,9,2016-10-17,2021-09-27
+"Tampa Bay Water (Florida)","Ammonia-nitrogen as N",764,374,2004-10-19,2008-09-24
+"Tampa Bay Water (Florida)","Inorganic nitrogen (nitrate and nitrite) as N",665,374,2004-10-19,2008-09-24
+"Tampa Bay Water (Florida)","Kjeldahl nitrogen",664,374,2004-10-19,2008-09-24
