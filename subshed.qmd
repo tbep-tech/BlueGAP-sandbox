@@ -1,0 +1,85 @@
+---
+title: "Tampa Bay sub-watersheds and zip codes"
+format:
+  html:
+    theme: cosmo
+    code-tools: 
+      source: https://github.com/tbep-tech/BlueGAP-sandbox/blob/main/subshed.qmd
+execute:
+  echo: false
+  warning: false
+filters:
+  - lightbox
+
+lightbox: auto
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(here)
+library(sf)
+library(mapview)
+library(tbeptools)
+library(reactable)
+library(downloadthis)
+
+data(tbshedzip)
+tbshedzip <- tbshedzip %>% 
+  filter(!Name %in% 'TAMPA BAY')
+subshed <- tbsegshed %>% 
+  select(long_name) %>% 
+  st_make_valid()
+zipsubshed <- tbshedzip %>% 
+  st_centroid() %>% 
+  st_make_valid() %>% 
+  st_intersection(subshed) %>% 
+  st_set_geometry(NULL) %>%
+  select(
+    `Bay segment` = long_name, 
+    `Zip code` = Name
+  ) 
+
+# st_write(subshed, here("data", "subshed.geojson"), delete_layer = T)
+```
+
+### Sub-watersheds of Tampa Bay and zip codes: 
+
+```{r}
+download_file(
+  here("data", "subshed.geojson"), 
+  button_label = "Download sub-watersheds of Tampa Bay"
+)
+```
+
+<br>
+
+```{r}
+#| out.width: 100%
+tbshedzip %>% 
+  mapview(col.regions = "lightblue", col = "black", lwd = 0.5, legend = FALSE, layer.name = 'Zip codes', 
+          map.types = c("CartoDB.Positron", "OpenStreetMap", 
+"Esri.WorldImagery", "OpenTopoMap")) +
+  mapview(subshed, col.regions = NA, col = 'black', lwd = 1.5, legend = FALSE, layer.name = 'Sub-watersheds')
+```
+
+### Zip code centroids by watershed:
+
+```{r}
+download_this(
+  zipsubshed, 
+  output_name = "zipsubshed.csv", 
+  button_label = "Download zip codes by sub-watershed"
+)
+```
+
+```{r}
+reactable(
+  zipsubshed,
+  groupBy = "Bay segment",
+  defaultExpanded = F, 
+  sortable = T, 
+  filterable = T
+)
+```
+
