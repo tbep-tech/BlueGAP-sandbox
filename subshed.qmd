@@ -63,7 +63,7 @@ tbshedzip %>%
   mapview(subshed, col.regions = NA, col = 'black', lwd = 1.5, legend = FALSE, layer.name = 'Sub-watersheds')
 ```
 
-### Zip code centroids by watershed:
+### Zip code centroids by sub-watershed:
 
 ```{r}
 download_this(
