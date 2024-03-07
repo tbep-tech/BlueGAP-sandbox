@@ -2,6 +2,7 @@ library(tidyverse)
 library(here)
 library(readxl)
 library(sf)
+library(tbeptools)
 
 sf_use_s2(FALSE)
 
@@ -190,3 +191,15 @@ tbshedtra <- bind_rows(tbtra, tbseguni)
 row.names(tbshedtra) <- 1:nrow(tbshedtra)
 
 save(tbshedtra, file = here('data/tbshedtra.RData'))
+
+# all epc data --------------------------------------------------------------------------------
+
+# file path
+xlsx <- 'dat.xlsx'
+
+# load and assign to object
+epcall <- read_importepc(xlsx, download_latest = T)
+
+save(epcall, file = here('data/epcall.RData'))
+
+file.remove(xlsx)
