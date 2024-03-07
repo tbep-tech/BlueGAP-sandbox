@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.533">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Marcus Beck, mbeck@tbep.org">
+<meta name="dcterms.date" content="2024-03-07">
+
+<title>Nitrate quantiles in Tampa Bay</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="quantiles_files/libs/clipboard/clipboard.min.js"></script>
+<script src="quantiles_files/libs/quarto-html/quarto.js"></script>
+<script src="quantiles_files/libs/quarto-html/popper.min.js"></script>
+<script src="quantiles_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="quantiles_files/libs/quarto-html/anchor.min.js"></script>
+<link href="quantiles_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="quantiles_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="quantiles_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="quantiles_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="quantiles_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="quantiles_files/libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="quantiles_files/libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="quantiles_files/libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script src="quantiles_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="quantiles_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="quantiles_files/libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="quantiles_files/libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="quantiles_files/libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="quantiles_files/libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="quantiles_files/libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="quantiles_files/libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="quantiles_files/libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="quantiles_files/libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="quantiles_files/libs/leaflet-providers-plugin-2.2.1/leaflet-providers-plugin.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Nitrate quantiles in Tampa Bay</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source" data-quarto-source-url="https://github.com/tbep-tech/BlueGAP-sandbox/blob/main/quantiles.qmd"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Marcus Beck, <a href="mailto:mbeck@tbep.org" class="email">mbeck@tbep.org</a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Tampa Bay Estuary Program
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 7, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="map" class="level3">
+<h3 class="anchored" data-anchor-id="map">Map</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-937ae70ec5bbd91ffba6" style="width:100%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-937ae70ec5bbd91ffba6">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[27.941563,27.889299,27.8589,27.8524,27.786501,27.812901,27.8118,27.778,27.723801,27.693399,27.6625,27.608101,27.666,27.5884,27.662701,27.708401,27.7932,27.826099,27.859501,27.8818,27.9291,27.937401,27.952801,27.9237,27.9904,27.972601,27.918501,27.8902,27.896999,27.9319,27.8493,27.940352,27.989901,27.9687,27.969999,27.9676,27.979401,27.945601,27.927799,27.9002,27.8519,27.908899,27.876499,27.8281,27.859145,27.809601,27.7813,27.751101,27.729,27.625999,27.627899,27.5737,27.578899,27.610001,27.6112,27.6378,27.53248,28.025757,28.010516,27.997444,27.981869,28.022132,28.054641,28.047886,28.149932,27.945796,27.951412,27.937863,27.704454,27.671603,27.857283,27.862966,27.862607,28.068096,28.088184,27.704599,27.835322,27.915042,28.0604,27.966566,27.915423,27.722349,27.66284,28.025808,28.026818,28.139877,27.838,28.134313,28.054005,27.981659,28.086091,28.030306,27.908457,28.010591,27.869101,27.926909,27.854094,28.03388,28.06563,28.065195,28.000104,27.989139,28.098613,27.872697,27.792006,28.025217,27.980425,28.035817,28.016552,28.050268,28.05115,28.020876,28.028368,27.991697,27.9459,27.857382,27.884933,27.716161,27.681033,27.672217,27.682508,28.024334,28.032722,27.96185,27.98556,28.085442,28.110817,28.128243,28.157066,27.955745,28.16544,28.052748,28.036883,28.025047,27.987116,28.135083,28.004037,28.0782,28.025647,28.051193,28.08478,27.977245,28.01878,28.016015,28.000945,28.011985,28.011823,27.972621,28.109804,27.8552,27.85775,27.85805,27.858517,27.863383,27.867029,27.866367,27.87185,27.880706,27.88172,27.87675,27.788167,27.95265,27.959905,27.97137,27.97897,27.985212,27.99773,28.004707,28.019453,28.01792,28.01423,27.717384,27.711383,27.71115,27.696833,27.69085,27.688221,27.67553,27.669626,27.667303,27.669421,27.664141,27.66666,27.93615,27.944167,27.9477,27.778177,27.7796,27.7814,27.782617,27.784033,27.788028,27.792374,27.793,27.793334,27.79775,27.7938,27.7764,27.772583,27.77895,27.772755,27.80015,27.674718,27.69222,27.690036,27.705,27.705083,27.6495,27.671144,27.657604,27.652544,27.656143,27.674956,27.677982,27.67195,27.666856,27.653855,27.763342,27.81616,27.82929,27.796463,27.807921,27.820583,27.844055,27.855609,27.8648,27.864722,27.852985,27.905206,27.93166,27.773208,27.82295,27.853803,27.832025,27.857555,27.897095,27.760517,27.7749,27.819233,27.826124,27.878207,27.885133,27.89004,27.739148,27.734655,27.810338,27.826177,27.962119,27.946902,27.937886,27.93782,27.876315,27.908977,27.893401,27.896033,27.934434,27.925935,27.969953,27.974632,27.984187,27.952052,27.952332,28.012566,28.011533,28.012533,28.021016,28.000784,27.9396,27.933683,27.9329,27.9309,27.928633,27.928883,27.92695,27.803983,27.66095,27.825233,28.10941,27.693033,27.738783,27.748983,27.9946,27.961733,28.03116,27.968178,27.677883,27.960492,28.01975,28.171315,27.68,28.12862,27.94155,28.08391,28.13361,28.05843,27.80665,27.897517,28.147133,28.124783,28.115833,28.097667,28.024967,28.12344,28.04069,28.04484,28.02645,27.76515,28.14115,28.1425,28.142483,28.142417,28.160433,28.08745,27.712083,27.718883,27.99006,28.142433,28.01138,27.98045,28.025217,28.0221,28.0977,28.1611,28.149599,28.1138,27.8916,27.858299,27.8533,28.13472,28.125,28.093599,27.9366,27.8647,27.8691,27.6875,27.96833],[-82.4585,-82.477402,-82.468597,-82.409302,-82.4272,-82.478897,-82.523201,-82.520302,-82.533798,-82.55590100000001,-82.56390399999999,-82.571198,-82.599197,-82.61930099999999,-82.6679,-82.6092,-82.570702,-82.567497,-82.553299,-82.577499,-82.58730300000001,-82.56500200000001,-82.64160200000001,-82.480698,-82.659302,-82.62020099999999,-82.537903,-82.54879800000001,-82.438202,-82.432602,-82.43139600000001,-82.41783100000001,-82.63159899999999,-82.56210299999999,-82.574303,-82.575996,-82.683296,-82.694298,-82.639702,-82.59200300000001,-82.580803,-82.46320299999999,-82.413803,-82.413101,-82.383348,-82.445999,-82.474098,-82.5718,-82.49870300000001,-82.591499,-82.641502,-82.686798,-82.744102,-82.783203,-82.69470200000001,-82.691002,-82.66155999999999,-82.631686,-82.607872,-82.586552,-82.562596,-82.43495900000001,-82.364285,-82.26784000000001,-82.221097,-82.40169299999999,-82.371353,-82.193917,-82.448004,-82.352153,-82.269149,-82.13696899999999,-82.136984,-82.26890400000001,-82.407696,-82.19789900000001,-82.346137,-82.4021,-82.27829699999999,-82.474942,-82.393422,-82.061156,-82.300945,-82.58105500000001,-82.538038,-82.149911,-82.381924,-82.361602,-82.345226,-82.35449800000001,-82.270825,-82.14068,-82.189373,-82.464895,-82.326401,-82.065258,-82.24644600000001,-82.621678,-82.56576200000001,-82.555069,-82.55174599999999,-82.550613,-82.31147300000001,-82.211276,-82.352254,-82.26348299999999,-82.35434100000001,-82.57666399999999,-82.53371,-82.63303399999999,-82.64404,-82.45254300000001,-82.244649,-82.466241,-82.37908299999999,-82.35382199999999,-82.30665,-82.470721,-82.43051699999999,-82.417,-82.496785,-82.393289,-82.38187000000001,-82.546672,-82.57017999999999,-82.56018299999999,-82.55015299999999,-82.543254,-82.5065,-82.401999,-82.26519999999999,-82.249095,-82.25945,-82.186007,-82.25909799999999,-82.116867,-82.343397,-82.1219,-82.50792,-82.50560299999999,-82.524671,-82.365621,-82.467933,-82.17473200000001,-82.593059,-82.579588,-82.54998500000001,-82.24024300000001,-82.434268,-82.39278299999999,-82.37569999999999,-82.36565,-82.34521700000001,-82.336367,-82.319954,-82.312833,-82.30968300000001,-82.31176000000001,-82.299786,-82.292433,-82.42786700000001,-82.46535,-82.464856,-82.48126999999999,-82.47695,-82.472155,-82.4709,-82.469855,-82.464,-82.44741999999999,-82.44118899999999,-82.478942,-82.46095,-82.45398299999999,-82.45755,-82.45218300000001,-82.43969,-82.43558,-82.43942,-82.430378,-82.411872,-82.40820100000001,-82.404973,-82.425517,-82.40725,-82.39061700000001,-82.40618000000001,-82.412217,-82.416833,-82.42149999999999,-82.418983,-82.416517,-82.41102600000001,-82.41381699999999,-82.41509499999999,-82.41195,-82.42015000000001,-82.438733,-82.430967,-82.42319999999999,-82.422867,-82.4254,-82.12070799999999,-82.19110000000001,-82.198206,-82.22968299999999,-82.2564,-82.29431700000001,-82.344577,-82.382257,-82.41409,-82.432376,-82.446708,-82.260085,-82.29343299999999,-82.298939,-82.49029299999999,-82.145793,-82.14588999999999,-82.145839,-82.11744400000001,-82.104197,-82.10427900000001,-82.104161,-82.087771,-82.155416,-82.178314,-82.224384,-82.401585,-82.399145,-82.335199,-82.25355,-82.274309,-82.28178800000001,-82.319002,-82.350397,-82.399142,-82.38809999999999,-82.38251700000001,-82.38162800000001,-82.390349,-82.391683,-82.397088,-82.41852,-82.395408,-82.327552,-82.33049099999999,-82.545728,-82.072327,-82.1204,-82.15652,-82.06674599999999,-82.170417,-82.170462,-82.2966,-82.33788800000001,-82.364045,-82.197948,-82.089184,-82.05604200000001,-82.18268399999999,-82.137359,-82.47236599999999,-82.47056600000001,-82.4693,-82.45945,-82.44972,-82.53058299999999,-82.527317,-82.52815,-82.52555,-82.52718299999999,-82.531767,-82.527,-82.334367,-82.50153299999999,-82.33485,-82.43079,-82.459717,-82.42635,-82.41289999999999,-82.57948,-82.2633,-82.18683,-82.18679,-82.27848299999999,-82.05547199999999,-82.46469999999999,-82.388908,-82.499199,-82.08113,-82.415583,-82.57272,-82.43044,-82.46133,-82.384,-82.401617,-82.280083,-82.237167,-82.24296699999999,-82.25515,-82.20802,-82.57732,-82.63966000000001,-82.64484,-82.23643300000001,-82.39404999999999,-82.43031000000001,-82.094083,-82.089783,-82.075067,-82.153417,-82.075783,-82.368933,-82.432,-82.57483999999999,-82.34013299999999,-82.57507,-82.354367,-82.26348299999999,-82.13829800000001,-82.3116,-82.261101,-82.206299,-82.118797,-82.074997,-82.248299,-82.2743,-82.36167,-82.237503,-82.25,-82.352699,-82.23159800000001,-82.32640000000001,-82.5214,-82.560501],5,null,null,{"interactive":true,"className":"","stroke":false,"color":["#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080"],"fillOpacity":0.8},null,null,["Station: 2<br>Type: marine<br>","Station: 6<br>Type: marine<br>","Station: 7<br>Type: marine<br>","Station: 8<br>Type: marine<br>","Station: 9<br>Type: marine<br>","Station: 11<br>Type: marine<br>","Station: 13<br>Type: marine<br>","Station: 14<br>Type: marine<br>","Station: 16<br>Type: marine<br>","Station: 19<br>Type: marine<br>","Station: 21<br>Type: marine<br>","Station: 22<br>Type: marine<br>","Station: 23<br>Type: marine<br>","Station: 24<br>Type: marine<br>","Station: 25<br>Type: marine<br>","Station: 28<br>Type: marine<br>","Station: 32<br>Type: marine<br>","Station: 33<br>Type: marine<br>","Station: 36<br>Type: marine<br>","Station: 38<br>Type: marine<br>","Station: 40<br>Type: marine<br>","Station: 41<br>Type: marine<br>","Station: 42<br>Type: marine<br>","Station: 44<br>Type: marine<br>","Station: 46<br>Type: marine<br>","Station: 47<br>Type: marine<br>","Station: 50<br>Type: marine<br>","Station: 51<br>Type: marine<br>","Station: 52<br>Type: marine<br>","Station: 54<br>Type: marine<br>","Station: 55<br>Type: marine<br>","Station: 58<br>Type: marine<br>","Station: 60<br>Type: marine<br>","Station: 61<br>Type: marine<br>","Station: 62<br>Type: marine<br>","Station: 63<br>Type: marine<br>","Station: 64<br>Type: marine<br>","Station: 65<br>Type: marine<br>","Station: 66<br>Type: marine<br>","Station: 67<br>Type: marine<br>","Station: 68<br>Type: marine<br>","Station: 70<br>Type: marine<br>","Station: 71<br>Type: marine<br>","Station: 73<br>Type: marine<br>","Station: 74<br>Type: marine<br>","Station: 80<br>Type: marine<br>","Station: 81<br>Type: marine<br>","Station: 82<br>Type: marine<br>","Station: 84<br>Type: marine<br>","Station: 90<br>Type: marine<br>","Station: 91<br>Type: marine<br>","Station: 92<br>Type: marine<br>","Station: 93<br>Type: marine<br>","Station: 94<br>Type: marine<br>","Station: 95<br>Type: marine<br>","Station: 96<br>Type: marine<br>","Station: 97<br>Type: marine<br>","Station: 101<br>Type: marine<br>","Station: 102<br>Type: marine<br>","Station: 103<br>Type: marine<br>","Station: 104<br>Type: marine<br>","Station: 105<br>Type: marine<br>","Station: 106<br>Type: fresh<br>","Station: 107<br>Type: fresh<br>","Station: 108<br>Type: fresh<br>","Station: 109<br>Type: marine<br>","Station: 110<br>Type: marine<br>","Station: 111<br>Type: fresh<br>","Station: 112<br>Type: marine<br>","Station: 113<br>Type: fresh<br>","Station: 114<br>Type: fresh<br>","Station: 115<br>Type: fresh<br>","Station: 116<br>Type: fresh<br>","Station: 118<br>Type: fresh<br>","Station: 120<br>Type: fresh<br>","Station: 129<br>Type: fresh<br>","Station: 132<br>Type: fresh<br>","Station: 133<br>Type: marine<br>","Station: 135<br>Type: fresh<br>","Station: 137<br>Type: marine<br>","Station: 138<br>Type: fresh<br>","Station: 139<br>Type: fresh<br>","Station: 140<br>Type: fresh<br>","Station: 141<br>Type: fresh<br>","Station: 142<br>Type: fresh<br>","Station: 143<br>Type: fresh<br>","Station: 144<br>Type: marine<br>","Station: 145<br>Type: fresh<br>","Station: 146<br>Type: fresh<br>","Station: 147<br>Type: fresh<br>","Station: 148<br>Type: fresh<br>","Station: 149<br>Type: fresh<br>","Station: 151<br>Type: fresh<br>","Station: 152<br>Type: marine<br>","Station: 153<br>Type: marine<br>","Station: 154<br>Type: fresh<br>","Station: 155<br>Type: fresh<br>","Station: 158<br>Type: fresh<br>","Station: 160<br>Type: fresh<br>","Station: 161<br>Type: fresh<br>","Station: 163<br>Type: fresh<br>","Station: 164<br>Type: fresh<br>","Station: 165<br>Type: fresh<br>","Station: 166<br>Type: fresh<br>","Station: 167<br>Type: fresh<br>","Station: 168<br>Type: fresh<br>","Station: 169<br>Type: fresh<br>","Station: 170<br>Type: fresh<br>","Station: 171<br>Type: fresh<br>","Station: 172<br>Type: fresh<br>","Station: 173<br>Type: fresh<br>","Station: 174<br>Type: marine<br>","Station: 175<br>Type: fresh<br>","Station: 176<br>Type: marine<br>","Station: 177<br>Type: marine<br>","Station: 178<br>Type: marine<br>","Station: 179<br>Type: marine<br>","Station: 180<br>Type: marine<br>","Station: 181<br>Type: marine<br>","Station: 182<br>Type: marine<br>","Station: 264<br>Type: marine<br>","Station: 265<br>Type: fresh<br>","Station: 266<br>Type: fresh<br>","Station: 501<br>Type: marine<br>","Station: 502<br>Type: marine<br>","Station: 506<br>Type: fresh<br>","Station: 507<br>Type: fresh<br>","Station: 508<br>Type: fresh<br>","Station: 509<br>Type: fresh<br>","Station: 520<br>Type: fresh<br>","Station: 523<br>Type: fresh<br>","Station: 528<br>Type: fresh<br>","Station: 529<br>Type: fresh<br>","Station: 533<br>Type: fresh<br>","Station: 534<br>Type: fresh<br>","Station: 536<br>Type: fresh<br>","Station: 604<br>Type: fresh<br>","Station: 605<br>Type: fresh<br>","Station: 608<br>Type: fresh<br>","Station: 609<br>Type: fresh<br>","Station: 610<br>Type: fresh<br>","Station: 615<br>Type: fresh<br>","Station: 616<br>Type: fresh<br>","Station: 618<br>Type: fresh<br>","Station: 619<br>Type: marine<br>","Station: 620<br>Type: marine<br>","Station: 622<br>Type: fresh<br>","Station: 625<br>Type: fresh<br>","Station: 630<br>Type: fresh<br>","Station: 1301<br>Type: marine<br>","Station: 1303<br>Type: marine<br>","Station: 1304<br>Type: marine<br>","Station: 1306<br>Type: marine<br>","Station: 1307<br>Type: marine<br>","Station: 1309<br>Type: marine<br>","Station: 1310<br>Type: marine<br>","Station: 1311<br>Type: marine<br>","Station: 1312<br>Type: marine<br>","Station: 1314<br>Type: marine<br>","Station: 1315<br>Type: marine<br>","Station: 1409<br>Type: marine<br>","Station: 1502<br>Type: marine<br>","Station: 1503<br>Type: marine<br>","Station: 1505<br>Type: marine<br>","Station: 1506<br>Type: marine<br>","Station: 1507<br>Type: marine<br>","Station: 1509<br>Type: marine<br>","Station: 1510<br>Type: marine<br>","Station: 1512<br>Type: marine<br>","Station: 1514<br>Type: marine<br>","Station: 1515<br>Type: marine<br>","Station: 1601<br>Type: marine<br>","Station: 1603<br>Type: marine<br>","Station: 1604<br>Type: marine<br>","Station: 1606<br>Type: marine<br>","Station: 1607<br>Type: marine<br>","Station: 1608<br>Type: marine<br>","Station: 1610<br>Type: marine<br>","Station: 1611<br>Type: marine<br>","Station: 1612<br>Type: marine<br>","Station: 1614<br>Type: marine<br>","Station: 1615<br>Type: marine<br>","Station: 1616<br>Type: marine<br>","Station: 1701<br>Type: marine<br>","Station: 1703<br>Type: marine<br>","Station: 1705<br>Type: marine<br>","Station: 14410<br>Type: marine<br>","Station: 14415<br>Type: marine<br>","Station: 14418<br>Type: marine<br>","Station: 14420<br>Type: marine<br>","Station: 14421<br>Type: marine<br>","Station: 14424<br>Type: marine<br>","Station: 14426<br>Type: marine<br>","Station: 14427<br>Type: marine<br>","Station: 14429<br>Type: marine<br>","Station: 14431<br>Type: marine<br>","Station: 14432<br>Type: marine<br>","Station: 14434<br>Type: marine<br>","Station: 14435<br>Type: marine<br>","Station: 14437<br>Type: marine<br>","Station: 14438<br>Type: marine<br>","Station: 14439<br>Type: marine<br>","Station: 564<br>Type: fresh<br>","Station: 565<br>Type: fresh<br>","Station: 566<br>Type: fresh<br>","Station: 567<br>Type: fresh<br>","Station: 568<br>Type: fresh<br>","Station: 569<br>Type: fresh<br>","Station: 570<br>Type: fresh<br>","Station: 581<br>Type: fresh<br>","Station: 582<br>Type: fresh<br>","Station: 583<br>Type: marine<br>","Station: 585<br>Type: marine<br>","Station: 600<br>Type: fresh<br>","Station: 602<br>Type: fresh<br>","Station: 603<br>Type: fresh<br>","Station: 633<br>Type: fresh<br>","Station: 545<br>Type: fresh<br>","Station: 546<br>Type: fresh<br>","Station: 547<br>Type: fresh<br>","Station: 548<br>Type: fresh<br>","Station: 549<br>Type: fresh<br>","Station: 550<br>Type: fresh<br>","Station: 551<br>Type: fresh<br>","Station: 552<br>Type: fresh<br>","Station: 556<br>Type: fresh<br>","Station: 557<br>Type: fresh<br>","Station: 558<br>Type: fresh<br>","Station: 560<br>Type: marine<br>","Station: 561<br>Type: fresh<br>","Station: 571<br>Type: fresh<br>","Station: 573<br>Type: fresh<br>","Station: 574<br>Type: fresh<br>","Station: 575<br>Type: fresh<br>","Station: 576<br>Type: fresh<br>","Station: 577<br>Type: fresh<br>","Station: 590<br>Type: fresh<br>","Station: 592<br>Type: marine<br>","Station: 594<br>Type: marine<br>","Station: 595<br>Type: marine<br>","Station: 596<br>Type: marine<br>","Station: 597<br>Type: marine<br>","Station: 598<br>Type: marine<br>","Station: 628<br>Type: fresh<br>","Station: 629<br>Type: fresh<br>","Station: 631<br>Type: fresh<br>","Station: 632<br>Type: fresh<br>","Station: 501<br>Type: marine<br>","Station: 541<br>Type: fresh<br>","Station: 542<br>Type: fresh<br>","Station: 543<br>Type: fresh<br>","Station: 553<br>Type: fresh<br>","Station: 554<br>Type: fresh<br>","Station: 555<br>Type: fresh<br>","Station: 559<br>Type: fresh<br>","Station: 606<br>Type: fresh<br>","Station: 607<br>Type: fresh<br>","Station: 612<br>Type: fresh<br>","Station: 623<br>Type: fresh<br>","Station: 624<br>Type: fresh<br>","Station: 626<br>Type: fresh<br>","Station: 627<br>Type: fresh<br>","Station: 267<br>Type: fresh<br>","Station: 268<br>Type: fresh<br>","Station: 269<br>Type: fresh<br>","Station: 270<br>Type: marine<br>","Station: 271<br>Type: fresh<br>","Station: 272<br>Type: marine<br>","Station: 273<br>Type: marine<br>","Station: 274<br>Type: marine<br>","Station: 275<br>Type: marine<br>","Station: 276<br>Type: marine<br>","Station: 277<br>Type: marine<br>","Station: 278<br>Type: marine<br>","Station: 572<br>Type: fresh<br>","Station: 584<br>Type: fresh<br>","Station: 621<br>Type: fresh<br>","Station: 512<br>Type: fresh<br>","Station: 586<br>Type: marine<br>","Station: 588<br>Type: marine<br>","Station: 589<br>Type: marine<br>","Station: 504<br>Type: marine<br>","Station: 617<br>Type: fresh<br>","Station: 263<br>Type: fresh<br>","Station: 613<br>Type: fresh<br>","Station: 601<br>Type: fresh<br>","Station: 614<br>Type: fresh<br>","Station: 514<br>Type: fresh<br>","Station: 611<br>Type: fresh<br>","Station: 136<br>Type: marine<br>","Station: 544<br>Type: fresh<br>","Station: 1702<br>Type: marine<br>","Station: 505<br>Type: fresh<br>","Station: 511<br>Type: fresh<br>","Station: 513<br>Type: fresh<br>","Station: 593<br>Type: fresh<br>","Station: 599<br>Type: marine<br>","Station: 522<br>Type: fresh<br>","Station: 524<br>Type: fresh<br>","Station: 525<br>Type: fresh<br>","Station: 526<br>Type: fresh<br>","Station: 532<br>Type: fresh<br>","Station: 159<br>Type: fresh<br>","Station: 156<br>Type: marine<br>","Station: 157<br>Type: marine<br>","Station: 531<br>Type: fresh<br>","Station: 591<br>Type: fresh<br>","Station: 510<br>Type: fresh<br>","Station: 537<br>Type: fresh<br>","Station: 538<br>Type: fresh<br>","Station: 539<br>Type: fresh<br>","Station: 527<br>Type: fresh<br>","Station: 540<br>Type: fresh<br>","Station: 580<br>Type: fresh<br>","Station: 587<br>Type: marine<br>","Station: 503<br>Type: fresh<br>","Station: 521<br>Type: fresh<br>","Station: 162<br>Type: fresh<br>","Station: 535<br>Type: fresh<br>","Station: 530<br>Type: fresh<br>","Station: 150<br>Type: fresh<br>","Station: 122<br>Type: fresh<br>","Station: 123<br>Type: fresh<br>","Station: 126<br>Type: fresh<br>","Station: 127<br>Type: fresh<br>","Station: 128<br>Type: fresh<br>","Station: 130<br>Type: fresh<br>","Station: 131<br>Type: fresh<br>","Station: 121<br>Type: fresh<br>","Station: 124<br>Type: fresh<br>","Station: 125<br>Type: fresh<br>","Station: 134<br>Type: fresh<br>","Station: 117<br>Type: fresh<br>","Station: 119<br>Type: marine<br>","Station: 925<br>Type: marine<br>","Station: 49<br>Type: marine<br>"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["navy","red"],"labels":["marine","fresh"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"unknown","title":"Type","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[27.53248,28.171315],"lng":[-82.783203,-82.05547199999999]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="quantiles" class="level3">
+<h3 class="anchored" data-anchor-id="quantiles">Quantiles</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="quantiles_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="quantiles_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">type1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">type1num</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">param</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">quantile</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">value</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">quanttyp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">marine</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Nitrates/Nitrites</td>
+<td style="text-align: left;">25th percentile</td>
+<td style="text-align: right;">0.0050</td>
+<td style="text-align: left;">IQR</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">marine</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Nitrates/Nitrites</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: right;">0.0130</td>
+<td style="text-align: left;">median</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">marine</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Nitrates/Nitrites</td>
+<td style="text-align: left;">75th percentile</td>
+<td style="text-align: right;">0.0390</td>
+<td style="text-align: left;">IQR</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">marine</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Nitrates only</td>
+<td style="text-align: left;">25th percentile</td>
+<td style="text-align: right;">0.0100</td>
+<td style="text-align: left;">IQR</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">marine</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Nitrates only</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: right;">0.0300</td>
+<td style="text-align: left;">median</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">marine</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Nitrates only</td>
+<td style="text-align: left;">75th percentile</td>
+<td style="text-align: right;">0.0600</td>
+<td style="text-align: left;">IQR</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fresh</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Nitrates/Nitrites</td>
+<td style="text-align: left;">25th percentile</td>
+<td style="text-align: right;">0.0560</td>
+<td style="text-align: left;">IQR</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fresh</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Nitrates/Nitrites</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: right;">0.2020</td>
+<td style="text-align: left;">median</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fresh</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Nitrates/Nitrites</td>
+<td style="text-align: left;">75th percentile</td>
+<td style="text-align: right;">0.5805</td>
+<td style="text-align: left;">IQR</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fresh</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Nitrates only</td>
+<td style="text-align: left;">25th percentile</td>
+<td style="text-align: right;">0.1200</td>
+<td style="text-align: left;">IQR</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fresh</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Nitrates only</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: right;">0.4200</td>
+<td style="text-align: left;">median</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fresh</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Nitrates only</td>
+<td style="text-align: left;">75th percentile</td>
+<td style="text-align: right;">1.1550</td>
+<td style="text-align: left;">IQR</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","loop":false,"selector":".lightbox","closeEffect":"zoom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
+
+
+
+
+</body></html>

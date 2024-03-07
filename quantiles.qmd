@@ -1,0 +1,138 @@
+---
+title: "Nitrate quantiles in Tampa Bay"
+author: 
+  - name: Marcus Beck, <mbeck@tbep.org>
+institute: "Tampa Bay Estuary Program"
+date: "`r Sys.Date()`"
+format:
+  html:
+    theme: cosmo
+    code-tools: 
+      source: https://github.com/tbep-tech/BlueGAP-sandbox/blob/main/quantiles.qmd
+execute:
+  echo: false
+  warning: false
+filters:
+  - lightbox
+
+lightbox: auto
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(here)
+library(sf)
+library(leaflet)
+
+load(file = here("data/epcall.RData"))
+
+dat <- epcall |> 
+  select(StationNumber, Class, PrimaryStationType, Latitude, 
+         Longitude, SampleTime, AreaName, matches('Nitrate|Nitrite')) |> 
+  mutate(
+    type1 = case_when(
+      Class %in% c('3M', '2') ~ 'marine',
+      Class %in% c('3F', '1') ~ 'fresh'
+      ),
+    type1 = factor(type1, levels = c('marine', 'fresh')),
+    type2 = case_when(
+      Class == '3M' ~ 'fish consumption marine', 
+      Class == '3F' ~ 'fish consumption fresh',
+      Class == '2' ~ 'shellfish',
+      Class == '1' ~ 'potable water supply',
+    ),
+    yr = year(SampleTime),
+    mo = month(SampleTime),
+  ) |> 
+  mutate_at(vars(matches('^Nitrates_Nitrites$|^Nitrates_mgL$')), as.numeric) |>
+  select(-SampleTime) |> 
+  filter(!is.na(type1))
+```
+
+### Map
+
+```{r}
+#| out-width: 100%
+pal <- colorFactor(c("navy", "red"), domain = c("marine", "fresh"), levels = c('marine', 'fresh'))
+
+# create leaflet map of stations with color by type
+tomap <- dat |> 
+  select(StationNumber, type1, Longitude, Latitude) |> 
+  distinct() |> 
+  filter(!is.na(Longitude)) 
+  
+leaflet(tomap) |> 
+  addProviderTiles(providers$CartoDB.Positron) |>  
+  addCircleMarkers(
+    lng = ~Longitude, 
+    lat = ~Latitude, 
+    radius = 5, 
+    stroke = F,
+    fillOpacity = 0.8, 
+    color = ~pal(type1), 
+    popup = ~paste0(
+      "Station: ", StationNumber, "<br>",
+      "Type: ", type1, "<br>"
+    )
+  ) |> 
+  addLegend(
+    position = "bottomright", 
+    colors = c("navy", "red"), 
+    labels = c("marine", "fresh"), 
+    title = "Type"
+  )
+```
+
+### Quantiles
+
+```{r}
+# plot of nitrates/nitrites quantiles by type
+toplo <- dat |> 
+  select(type1, matches('^Nitrates\\_Nitrites$|^Nitrates_mgL$')) |>
+  pivot_longer(cols = -type1, names_to = 'param', values_to = 'value') |> 
+  na.omit(value) |> 
+  mutate(
+    type1num = as.numeric(type1), 
+    param = factor(param, levels = c('Nitrates_Nitrites', 'Nitrates_mgL'), 
+                   labels = c('Nitrates/Nitrites', 'Nitrates only'))
+  )
+
+qnts <- toplo |> 
+  group_by(type1, type1num, param) |> 
+  summarize(
+    q25 = quantile(value, 0.25),
+    q50 = quantile(value, 0.5),
+    q75 = quantile(value, 0.75)
+  ) |> 
+  pivot_longer(cols = matches('^q'), names_to = 'quantile', values_to = 'value') |> 
+  mutate(
+    quantile = case_when(
+      quantile == 'q25' ~ '25th percentile',
+      quantile == 'q50' ~ 'median',
+      quantile == 'q75' ~ '75th percentile'
+    ), 
+    quanttyp = ifelse(quantile == 'median', 'median', 'IQR')
+  )
+
+ggplot(toplo, aes(x = type1, y = value, fill = type1, group = type1)) +
+  geom_point(position = position_jitter(width = 0.2), alpha = 0.1) +
+  geom_segment(data = qnts, aes(x = type1num-0.2, xend = type1num + 0.2, y = value, yend = value, color = quanttyp)) +
+  scale_y_log10() +
+  facet_grid(~param, scales = 'free_y') +
+  theme_minimal() +
+  theme(legend.position = 'none') +
+  labs(
+    x = "Type",
+    y = "mg/L",
+    color = 'Quantiles',
+    title = "Nitrates/Nitrites by Type"
+  ) +
+  scale_fill_manual(values = c("navy", "red")) +
+  coord_flip()
+```
+
+```{r}
+knitr::kable(qnts, format = 'html')
+```
+
