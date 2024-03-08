@@ -24,6 +24,7 @@ library(tidyverse)
 library(here)
 library(sf)
 library(leaflet)
+library(flextable)
 
 load(file = here("data/epcall.RData"))
 
@@ -32,16 +33,17 @@ dat <- epcall |>
          Longitude, SampleTime, AreaName, matches('Nitrate|Nitrite')) |> 
   mutate(
     type1 = case_when(
-      Class %in% c('3M', '2') ~ 'marine',
-      Class %in% c('3F', '1') ~ 'fresh'
+      Class %in% c('3M', '2') ~ 'Marine',
+      Class %in% c('3F', '1') ~ 'Fresh'
       ),
-    type1 = factor(type1, levels = c('marine', 'fresh')),
+    type1 = factor(type1, levels = c('Marine', 'Fresh')),
     type2 = case_when(
-      Class == '3M' ~ 'fish consumption marine', 
-      Class == '3F' ~ 'fish consumption fresh',
-      Class == '2' ~ 'shellfish',
-      Class == '1' ~ 'potable water supply',
+      Class == '3M' ~ 'Fish consumption marine', 
+      Class == '3F' ~ 'Fish consumption fresh',
+      Class == '2' ~ 'Shellfish',
+      Class == '1' ~ 'Potable water supply',
     ),
+    type2 = factor(type2, levels = c('Fish consumption marine', 'Fish consumption fresh', 'Shellfish', 'Potable water supply')),
     yr = year(SampleTime),
     mo = month(SampleTime),
   ) |> 
@@ -50,11 +52,57 @@ dat <- epcall |>
   filter(!is.na(type1))
 ```
 
+This document is a quick summary of the distribution of nitrate data collected by the Environmental Protection Commission of Hillsborough County.  Source data are available [here](https://epcbocc.sharepoint.com/sites/Share/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FShare%2FShared%20Documents%2FOutbound%2FERM%2FWQM%5FReports&p=true&ga=1){target="_blank"}. Nitrates and nitrites have been collectively measured since the early 1980s, with only nitrate quantified prior.
+
+```{r}
+#| out-width: 100%
+#| fig-height: 3
+#| fig-width: 8
+toplo <- dat |> 
+  select(yr, mo, matches('Nitrates_Nitrites$|Nitrates_mgL')) |>
+  pivot_longer(cols = -c(yr, mo), names_to = 'param', values_to = 'value') |>
+  summarise(
+    cnt = sum(!is.na(value)), 
+    .by = c(yr, mo, param)
+  ) |> 
+  mutate(
+    param = factor(param, levels = c('Nitrates_Nitrites', 'Nitrates_mgL'), 
+                   labels = c('Nitrates/Nitrites', 'Nitrate only')),
+    date = as.Date(paste0(yr, '-', mo, '-01'))
+  )
+
+p <- ggplot(toplo, aes(x = date, y = cnt, group = param, fill = param)) + 
+  geom_area(alpha = 0.8) + 
+  theme_minimal() + 
+  theme(
+    panel.grid.minor = element_blank(), 
+    legend.position = 'top'
+  ) +
+  labs(
+    x = NULL, 
+    y = "N observations", 
+    fill = NULL
+  )
+
+p
+```
+
+Only data for the last ten years was evaluated below to describe the relative distribution of nitrate/nitrite by site type (freshwater or marine) or the designated use.
+
+```{r}
+dat <- dat |> 
+  filter(yr >= 2011)
+```
+
+::: {.panel-tabset}
+
+## Fresh/marine
+
 ### Map
 
 ```{r}
 #| out-width: 100%
-pal <- colorFactor(c("navy", "red"), domain = c("marine", "fresh"), levels = c('marine', 'fresh'))
+pal <- colorFactor(c("navy", "red"), domain = c("Marine", "Fresh"), levels = c('Marine', 'Fresh'))
 
 # create leaflet map of stations with color by type
 tomap <- dat |> 
@@ -79,8 +127,8 @@ leaflet(tomap) |>
   addLegend(
     position = "bottomright", 
     colors = c("navy", "red"), 
-    labels = c("marine", "fresh"), 
-    title = "Type"
+    labels = c("Marine", "Fresh"), 
+    title = NULL
   )
 ```
 
@@ -89,21 +137,21 @@ leaflet(tomap) |>
 ```{r}
 # plot of nitrates/nitrites quantiles by type
 toplo <- dat |> 
-  select(type1, matches('^Nitrates\\_Nitrites$|^Nitrates_mgL$')) |>
+  select(type1, matches('^Nitrates\\_Nitrites$')) |>
   pivot_longer(cols = -type1, names_to = 'param', values_to = 'value') |> 
   na.omit(value) |> 
   mutate(
     type1num = as.numeric(type1), 
-    param = factor(param, levels = c('Nitrates_Nitrites', 'Nitrates_mgL'), 
-                   labels = c('Nitrates/Nitrites', 'Nitrates only'))
+    param = factor(param, levels = c('Nitrates_Nitrites'), 
+                   labels = c('Nitrates/Nitrites'))
   )
 
 qnts <- toplo |> 
-  group_by(type1, type1num, param) |> 
   summarize(
     q25 = quantile(value, 0.25),
     q50 = quantile(value, 0.5),
-    q75 = quantile(value, 0.75)
+    q75 = quantile(value, 0.75), 
+    .by = c(type1, type1num, param)
   ) |> 
   pivot_longer(cols = matches('^q'), names_to = 'quantile', values_to = 'value') |> 
   mutate(
@@ -112,27 +160,134 @@ qnts <- toplo |>
       quantile == 'q50' ~ 'median',
       quantile == 'q75' ~ '75th percentile'
     ), 
-    quanttyp = ifelse(quantile == 'median', 'median', 'IQR')
+    quanttyp = ifelse(quantile == 'median', 'median', '25th/75th percentile')
   )
 
-ggplot(toplo, aes(x = type1, y = value, fill = type1, group = type1)) +
+ggplot(toplo, aes(x = type1, y = value, group = type1)) +
   geom_point(position = position_jitter(width = 0.2), alpha = 0.1) +
-  geom_segment(data = qnts, aes(x = type1num-0.2, xend = type1num + 0.2, y = value, yend = value, color = quanttyp)) +
+  geom_segment(data = qnts, aes(x = type1num-0.2, xend = type1num + 0.2, y = value, yend = value, color = quanttyp), linewidth = 1.5) +
   scale_y_log10() +
   facet_grid(~param, scales = 'free_y') +
-  theme_minimal() +
-  theme(legend.position = 'none') +
+  theme_minimal(base_size = 14) +
   labs(
-    x = "Type",
+    x = NULL,
     y = "mg/L",
-    color = 'Quantiles',
-    title = "Nitrates/Nitrites by Type"
+    color = 'Quantiles'
   ) +
   scale_fill_manual(values = c("navy", "red")) +
   coord_flip()
 ```
 
 ```{r}
-knitr::kable(qnts, format = 'html')
+totab <- qnts |> 
+  select(-type1num, -quanttyp, -param) |> 
+  pivot_wider(names_from = quantile, values_from = value) |> 
+  arrange(desc(type1))
+
+totab |> 
+  as_grouped_data(groups = 'type1') |> 
+  flextable() |> 
+  set_header_labels(
+    type1 = ''
+  ) |> 
+  autofit()
 ```
 
+## Designated use
+
+### Map
+
+```{r}
+#| out-width: 100%
+pal <- colorFactor(palette = c('navy', 'red', 'green', 'purple'), domain = c("Fish consumption marine", "Fish consumption fresh", "Shellfish", "Potable water supply"), levels = c('Fish consumption marine', 'Fish consumption fresh', 'Shellfish', 'Potable water supply'))
+# create leaflet map of stations with color by type
+tomap <- dat |> 
+  select(StationNumber, type2, Longitude, Latitude) |> 
+  distinct() |> 
+  filter(!is.na(Longitude)) 
+  
+leaflet(tomap) |> 
+  addProviderTiles(providers$CartoDB.Positron) |>  
+  addCircleMarkers(
+    lng = ~Longitude, 
+    lat = ~Latitude, 
+    radius = 5, 
+    stroke = F,
+    fillOpacity = 0.8, 
+    color = ~pal(type2), 
+    popup = ~paste0(
+      "Station: ", StationNumber, "<br>",
+      "Type: ", type2, "<br>"
+    )
+  ) |> 
+  addLegend(
+    position = "bottomright", 
+    colors = c('navy', 'red', 'green', 'purple'), 
+    labels = c('Fish consumption marine', 'Fish consumption fresh', 'Shellfish', 'Potable water supply'), 
+    title = NULL
+  )
+```
+
+### Quantiles
+
+```{r}
+# plot of nitrates/nitrites quantiles by type
+toplo <- dat |> 
+  select(type2, matches('^Nitrates\\_Nitrites$')) |>
+  pivot_longer(cols = -type2, names_to = 'param', values_to = 'value') |> 
+  na.omit(value) |> 
+  mutate(
+    type2num = as.numeric(type2), 
+    param = factor(param, levels = c('Nitrates_Nitrites'), 
+                   labels = c('Nitrates/Nitrites'))
+  )
+
+qnts <- toplo |> 
+  summarize(
+    q25 = quantile(value, 0.25),
+    q50 = quantile(value, 0.5),
+    q75 = quantile(value, 0.75), 
+    .by = c(type2, type2num, param)
+  ) |> 
+  pivot_longer(cols = matches('^q'), names_to = 'quantile', values_to = 'value') |> 
+  mutate(
+    quantile = case_when(
+      quantile == 'q25' ~ '25th percentile',
+      quantile == 'q50' ~ 'median',
+      quantile == 'q75' ~ '75th percentile'
+    ), 
+    quanttyp = ifelse(quantile == 'median', 'median', '25th/75th percentile')
+  )
+
+ggplot(toplo, aes(x = type2, y = value, group = type2)) +
+  geom_point(position = position_jitter(width = 0.2), alpha = 0.1) +
+  geom_segment(data = qnts, aes(x = type2num-0.2, xend = type2num + 0.2, y = value, yend = value, color = quanttyp), linewidth = 1.5) +
+  scale_y_log10() +
+  facet_grid(~param, scales = 'free_y') +
+  theme_minimal(base_size = 14) +
+  labs(
+    x = NULL,
+    y = "mg/L",
+    color = 'Quantiles'
+  ) +
+  scale_fill_manual(values = c("navy", "red")) +
+  coord_flip()
+```
+
+```{r}
+
+totab <- qnts |> 
+  select(-type2num, -quanttyp, -param) |> 
+  pivot_wider(names_from = quantile, values_from = value) |> 
+  arrange(desc(type2))
+
+totab |> 
+  as_grouped_data(groups = 'type2') |> 
+  flextable() |> 
+  set_header_labels(
+    type2 = ''
+  ) |> 
+  autofit()
+```
+
+:::
