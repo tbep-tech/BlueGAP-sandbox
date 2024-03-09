@@ -169,6 +169,7 @@ ggplot(toplo, aes(x = type1, y = value, group = type1)) +
   scale_y_log10() +
   facet_grid(~param, scales = 'free_y') +
   theme_minimal(base_size = 14) +
+  theme(legend.position = 'top') +
   labs(
     x = NULL,
     y = "mg/L",
@@ -265,6 +266,7 @@ ggplot(toplo, aes(x = type2, y = value, group = type2)) +
   scale_y_log10() +
   facet_grid(~param, scales = 'free_y') +
   theme_minimal(base_size = 14) +
+  theme(legend.position = 'top') +
   labs(
     x = NULL,
     y = "mg/L",
