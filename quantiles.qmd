@@ -33,10 +33,10 @@ dat <- epcall |>
          Longitude, SampleTime, AreaName, matches('Nitrate|Nitrite')) |> 
   mutate(
     type1 = case_when(
-      Class %in% c('3M', '2') ~ 'Marine',
-      Class %in% c('3F', '1') ~ 'Fresh'
+      Class %in% c('3F', '1') ~ 'Fresh',
+      Class %in% c('3M', '2') ~ 'Marine'
       ),
-    type1 = factor(type1, levels = c('Marine', 'Fresh')),
+    type1 = factor(type1, levels = c('Fresh', 'Marine')),
     type2 = case_when(
       Class == '3M' ~ 'Fish consumption marine', 
       Class == '3F' ~ 'Fish consumption fresh',
@@ -52,7 +52,7 @@ dat <- epcall |>
   filter(!is.na(type1))
 ```
 
-This document is a quick summary of the distribution of nitrate data collected by the Environmental Protection Commission of Hillsborough County.  Source data are available [here](https://epcbocc.sharepoint.com/sites/Share/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FShare%2FShared%20Documents%2FOutbound%2FERM%2FWQM%5FReports&p=true&ga=1){target="_blank"}. Nitrates and nitrites have been collectively measured since the early 1980s, with only nitrate quantified prior.
+This document is a quick summary of the distribution of nitrate data collected by the Environmental Protection Commission of Hillsborough County.  Source data are available [here](https://epcbocc.sharepoint.com/:f:/s/Share/EiypSSYdsEFCi84Sv_6-t7kBUYaXiIqN0B1n2w57Z_V3kQ?e=NdZQcU){target="_blank"}. Nitrates and nitrites have been collectively measured since the early 1980s, with only nitrate quantified prior.
 
 ```{r}
 #| out-width: 100%
@@ -66,8 +66,8 @@ toplo <- dat |>
     .by = c(yr, mo, param)
   ) |> 
   mutate(
-    param = factor(param, levels = c('Nitrates_Nitrites', 'Nitrates_mgL'), 
-                   labels = c('Nitrates/Nitrites', 'Nitrate only')),
+    param = factor(param, levels = c('Nitrates_mgL', 'Nitrates_Nitrites'), 
+                   labels = c('Nitrate only', 'Nitrates/Nitrites')),
     date = as.Date(paste0(yr, '-', mo, '-01'))
   )
 
@@ -102,7 +102,7 @@ dat <- dat |>
 
 ```{r}
 #| out-width: 100%
-pal <- colorFactor(c("navy", "skyblue"), domain = c("Marine", "Fresh"), levels = c('Marine', 'Fresh'))
+pal <- colorFactor(c("skyblue", "navy"), domain = c("Fresh", "Marine"), levels = c('Fresh', 'Marine'))
 
 # create leaflet map of stations with color by type
 tomap <- dat |> 
@@ -126,8 +126,9 @@ leaflet(tomap) |>
   ) |> 
   addLegend(
     position = "bottomright", 
-    colors = c("navy", "skyblue"), 
-    labels = c("Marine", "Fresh"), 
+    colors = c("skyblue", "navy"), 
+    labels = c("Fresh", "Marine"), 
+    opacity = 0.8,
     title = NULL
   )
 ```
@@ -141,6 +142,7 @@ toplo <- dat |>
   pivot_longer(cols = -type1, names_to = 'param', values_to = 'value') |> 
   na.omit(value) |> 
   mutate(
+    type1 = factor(type1, levels = rev(levels(type1))),
     type1num = as.numeric(type1), 
     param = factor(param, levels = c('Nitrates_Nitrites'), 
                    labels = c('Nitrates/Nitrites'))
@@ -175,7 +177,6 @@ ggplot(toplo, aes(x = type1, y = value, group = type1)) +
     y = "mg/L",
     color = 'Quantiles'
   ) +
-  scale_fill_manual(values = c("navy", "skyblue")) +
   coord_flip()
 ```
 
@@ -223,8 +224,9 @@ leaflet(tomap) |>
   ) |> 
   addLegend(
     position = "bottomright", 
-    colors = c('navy', 'skyblue', 'green', 'purple'), 
+    colors = c('navy', 'skyblue', '#33ff33', 'purple'), 
     labels = c('Fish consumption marine', 'Fish consumption fresh', 'Shellfish', 'Potable water supply'), 
+    opacity = 0.8,
     title = NULL
   )
 ```
@@ -238,6 +240,7 @@ toplo <- dat |>
   pivot_longer(cols = -type2, names_to = 'param', values_to = 'value') |> 
   na.omit(value) |> 
   mutate(
+    type2 = factor(type2, levels = rev(levels(type2))),
     type2num = as.numeric(type2), 
     param = factor(param, levels = c('Nitrates_Nitrites'), 
                    labels = c('Nitrates/Nitrites'))
@@ -272,7 +275,6 @@ ggplot(toplo, aes(x = type2, y = value, group = type2)) +
     y = "mg/L",
     color = 'Quantiles'
   ) +
-  scale_fill_manual(values = c("navy", "skyblue")) +
   coord_flip()
 ```
 
