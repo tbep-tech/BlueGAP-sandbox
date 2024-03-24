@@ -102,7 +102,7 @@ dat <- dat |>
 
 ```{r}
 #| out-width: 100%
-pal <- colorFactor(c("navy", "red"), domain = c("Marine", "Fresh"), levels = c('Marine', 'Fresh'))
+pal <- colorFactor(c("navy", "skyblue"), domain = c("Marine", "Fresh"), levels = c('Marine', 'Fresh'))
 
 # create leaflet map of stations with color by type
 tomap <- dat |> 
@@ -126,7 +126,7 @@ leaflet(tomap) |>
   ) |> 
   addLegend(
     position = "bottomright", 
-    colors = c("navy", "red"), 
+    colors = c("navy", "skyblue"), 
     labels = c("Marine", "Fresh"), 
     title = NULL
   )
@@ -175,7 +175,7 @@ ggplot(toplo, aes(x = type1, y = value, group = type1)) +
     y = "mg/L",
     color = 'Quantiles'
   ) +
-  scale_fill_manual(values = c("navy", "red")) +
+  scale_fill_manual(values = c("navy", "skyblue")) +
   coord_flip()
 ```
 
@@ -200,7 +200,7 @@ totab |>
 
 ```{r}
 #| out-width: 100%
-pal <- colorFactor(palette = c('navy', 'red', 'green', 'purple'), domain = c("Fish consumption marine", "Fish consumption fresh", "Shellfish", "Potable water supply"), levels = c('Fish consumption marine', 'Fish consumption fresh', 'Shellfish', 'Potable water supply'))
+pal <- colorFactor(palette = c('navy', 'skyblue', 'green', 'purple'), domain = c("Fish consumption marine", "Fish consumption fresh", "Shellfish", "Potable water supply"), levels = c('Fish consumption marine', 'Fish consumption fresh', 'Shellfish', 'Potable water supply'))
 # create leaflet map of stations with color by type
 tomap <- dat |> 
   select(StationNumber, type2, Longitude, Latitude) |> 
@@ -223,7 +223,7 @@ leaflet(tomap) |>
   ) |> 
   addLegend(
     position = "bottomright", 
-    colors = c('navy', 'red', 'green', 'purple'), 
+    colors = c('navy', 'skyblue', 'green', 'purple'), 
     labels = c('Fish consumption marine', 'Fish consumption fresh', 'Shellfish', 'Potable water supply'), 
     title = NULL
   )
@@ -272,7 +272,7 @@ ggplot(toplo, aes(x = type2, y = value, group = type2)) +
     y = "mg/L",
     color = 'Quantiles'
   ) +
-  scale_fill_manual(values = c("navy", "red")) +
+  scale_fill_manual(values = c("navy", "skyblue")) +
   coord_flip()
 ```
 
